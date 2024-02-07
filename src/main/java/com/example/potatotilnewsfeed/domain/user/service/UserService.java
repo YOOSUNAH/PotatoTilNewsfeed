@@ -1,9 +1,9 @@
 package com.example.potatotilnewsfeed.domain.user.service;
 
 import com.example.potatotilnewsfeed.domain.user.dto.LoginRequestDto;
+import com.example.potatotilnewsfeed.domain.user.dto.SignupRequestDto;
 import com.example.potatotilnewsfeed.domain.user.entity.User;
 import com.example.potatotilnewsfeed.domain.user.repository.UserRepository;
-import com.example.potatotilnewsfeed.domain.user.dto.SignupRequestDto;
 import com.example.potatotilnewsfeed.global.jwt.JwtUtil;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class UserService {
+
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;

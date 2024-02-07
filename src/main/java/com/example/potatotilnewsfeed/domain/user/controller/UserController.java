@@ -1,9 +1,9 @@
 package com.example.potatotilnewsfeed.domain.user.controller;
 
 import com.example.potatotilnewsfeed.domain.user.dto.LoginRequestDto;
-import com.example.potatotilnewsfeed.global.dto.ResponseDto;
 import com.example.potatotilnewsfeed.domain.user.dto.SignupRequestDto;
 import com.example.potatotilnewsfeed.domain.user.service.UserService;
+import com.example.potatotilnewsfeed.global.dto.ResponseDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,8 @@ public class UserController {
     public static final String LOGIN_SUCCESS = "로그인 성공";
 
     @PostMapping("/v1/user/signup")
-    public ResponseEntity<ResponseDto<Void>> signup(@RequestBody @Valid SignupRequestDto requestDto) {
+    public ResponseEntity<ResponseDto<Void>> signup(
+        @RequestBody @Valid SignupRequestDto requestDto) {
         log.info(SIGN_UP_API);
 
         userService.signup(requestDto);

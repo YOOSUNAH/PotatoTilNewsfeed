@@ -9,17 +9,17 @@ import lombok.Getter;
 @Table(name = "comment")
 public class Comment {  // 댓글
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long commentId;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long commentId;
 
-    @JoinColumn(nullable = false, unique = true)
-    private Long tilId;
+  @JoinColumn(nullable = false, unique = true)
+  private Long tilId;
 
-    @JoinColumn(nullable = false, unique = true)
-    private Long userId;
+  @JoinColumn(nullable = false, unique = true)
+  private Long userId;
 
-    @Column(nullable = false, unique = true)
-    private String content;
+  @Column(nullable = false, unique = true)
+  private String content;
 
 }

@@ -8,11 +8,10 @@ import lombok.Getter;
 @AllArgsConstructor
 public class CommentResponseDto {
 
-    public String contents;
-    public Long tilId;
-    public Long userId;
-    public Long commentId;
-
+  public String contents;
+  public Long tilId;
+  public Long userId;
+  public Long commentId;
 
 
 }

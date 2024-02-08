@@ -39,7 +39,7 @@ public class WebConfig {
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
-        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtUtil);
+        JwtAuthenticationFilter filter = new JwtAuthenticationFilter(jwtUtil, userDetailsService);
         filter.setAuthenticationManager(authenticationManager(authenticationConfiguration));
         return filter;
     }

@@ -3,6 +3,7 @@ package com.example.potatotilnewsfeed.domain.user.service;
 import com.example.potatotilnewsfeed.domain.user.dto.SignupRequestDto;
 import com.example.potatotilnewsfeed.domain.user.entity.User;
 import com.example.potatotilnewsfeed.domain.user.repository.UserRepository;
+import com.example.potatotilnewsfeed.global.jwt.JwtUtil;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
@@ -36,4 +37,7 @@ public class UserService {
         }
     }
 
+    public void logout(String accessToken) {
+
+    }
 }

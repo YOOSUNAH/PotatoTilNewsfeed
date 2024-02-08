@@ -7,7 +7,7 @@ import lombok.Getter;
 @Entity
 @Getter
 @Table(name = "comment")
-public class Comment {  // 댓글
+public class Comment {  // 댓글..
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

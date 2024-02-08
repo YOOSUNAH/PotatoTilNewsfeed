@@ -2,6 +2,8 @@ package com.example.potatotilnewsfeed.domain.user.service;
 
 import com.example.potatotilnewsfeed.domain.user.dto.LoginRequestDto;
 import com.example.potatotilnewsfeed.domain.user.dto.SignupRequestDto;
+import com.example.potatotilnewsfeed.domain.user.dto.UserRequestDto;
+import com.example.potatotilnewsfeed.domain.user.dto.UserResponseDto;
 import com.example.potatotilnewsfeed.domain.user.entity.User;
 import com.example.potatotilnewsfeed.domain.user.repository.UserRepository;
 import com.example.potatotilnewsfeed.global.jwt.JwtUtil;
@@ -62,4 +64,8 @@ public class UserService {
             () -> new NoSuchElementException("사용자를 찾을 수 없습니다.")
         );
     }
+
+    public UserResponseDto getProfile() {
+    }
+
 }

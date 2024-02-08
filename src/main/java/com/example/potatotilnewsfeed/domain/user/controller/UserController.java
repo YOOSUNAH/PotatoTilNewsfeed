@@ -2,6 +2,8 @@ package com.example.potatotilnewsfeed.domain.user.controller;
 
 import com.example.potatotilnewsfeed.domain.user.dto.LoginRequestDto;
 import com.example.potatotilnewsfeed.domain.user.dto.SignupRequestDto;
+import com.example.potatotilnewsfeed.domain.user.dto.UserRequestDto;
+import com.example.potatotilnewsfeed.domain.user.dto.UserResponseDto;
 import com.example.potatotilnewsfeed.domain.user.service.UserService;
 import com.example.potatotilnewsfeed.global.dto.ResponseDto;
 import jakarta.validation.Valid;
@@ -9,6 +11,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,4 +54,26 @@ public class UserController {
                 .message(LOGIN_SUCCESS)
                 .build());
     }
+
+
+    public static final String PROFILE_API = "프로필 API";
+    public static final String GET_PROFILE_SUCCESS = "프로필 조회 성공";
+    public static final String UPDATE_PROFILE_SUCCESS = "프로필 수정 성공";
+    public static final String PROFILE_PASSWORD_API = "프로필 비밀번호 변경 API";
+    public static final String UPDATE_PROFILE_PASSWORD_SUCCESS = "프로필 수정 성공";
+
+    @GetMapping("/v1/users/")
+    public ResponseEntity<ResponseDto<UserResponseDto>> getProfile() {
+        log.info(PROFILE_API);
+        UserResponseDto userResponseDto = userService.getProfile();
+        return ResponseEntity.ok()
+            .body(ResponseDto.<UserResponseDto>builder()
+                .message(SIGN_UP_SUCCESS)
+                .data(userResponseDto)
+                .build());
+    }
+
+
+
+
 }

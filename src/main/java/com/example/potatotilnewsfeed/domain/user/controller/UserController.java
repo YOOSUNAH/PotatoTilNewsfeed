@@ -55,7 +55,7 @@ public class UserController {
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
         log.info(PROFILE_API);
         try {
-            UserResponseDto userResponseDto = userResponseDto = userService.getProfile(userDetails);
+            UserResponseDto userResponseDto = userService.getProfile(userDetails);
             return ResponseEntity.ok()
                 .body(ResponseDto.<UserResponseDto>builder()
                     .message(GET_PROFILE_SUCCESS)

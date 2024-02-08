@@ -26,7 +26,7 @@ public class UserController {
     public static final String LOGIN_API = "로그인 API";
     public static final String LOGIN_SUCCESS = "로그인 성공";
 
-    @PostMapping("/v1/user/signup")
+    @PostMapping("/v1/users/signup")
     public ResponseEntity<ResponseDto<Void>> signup(
         @RequestBody @Valid SignupRequestDto requestDto) {
         log.info(SIGN_UP_API);
@@ -39,7 +39,7 @@ public class UserController {
                 .build());
     }
 
-    @PostMapping("/v1/user/login")
+    @PostMapping("/v1/users/login")
     public ResponseEntity<ResponseDto<Void>> login(@RequestBody LoginRequestDto requestDto) {
         log.info(LOGIN_API);
 

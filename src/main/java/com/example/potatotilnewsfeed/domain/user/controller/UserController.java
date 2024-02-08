@@ -42,6 +42,7 @@ public class UserController {
     public static final String GET_PROFILE_SUCCESS = "프로필 조회 성공";
     public static final String GET_PROFILE_FAIL = "프로필 조회 실패";
     public static final String UPDATE_PROFILE_SUCCESS = "프로필 수정 성공";
+    public static final String UPDATE_PROFILE_FAIL = "프로필 수정 실패";
     public static final String PROFILE_PASSWORD_API = "프로필 비밀번호 변경 API";
     public static final String UPDATE_PROFILE_PASSWORD_SUCCESS = "프로필 수정 성공";
 
@@ -54,7 +55,7 @@ public class UserController {
             UserResponseDto userResponseDto = userResponseDto = userService.getProfile(userDetails);
             return ResponseEntity.ok()
                 .body(ResponseDto.<UserResponseDto>builder()
-                    .message(SIGN_UP_SUCCESS)
+                    .message(GET_PROFILE_SUCCESS)
                     .data(userResponseDto)
                     .build());
         } catch (IllegalArgumentException e) {
@@ -64,6 +65,7 @@ public class UserController {
                     .build());
         }
     }
+
 
 
 

@@ -69,27 +69,21 @@ public class UserService {
         Long userId = userDetails.getUser().getUserId();
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new IllegalArgumentException("선택한 유저가 존재하지 않습니다."));
-
-        // 비밀번호 아는지 확인
-        // 기존 비밀번호
+        // 기존 비밀번호 가져오기
         String currentPassword = user.getPassword();
         // 기존 비밀번호를 입력해주세요 (입력받은 값)
         String password = userRequestDto.getPassword();
-
-        // raw  , check (인코딩 된것)
+        // 기존 비밀번호 확인
         validatePassword(password, currentPassword);
-        log.info("확인 1");
-
         // 바꾸는 비밀번호
         String newPassword = userRequestDto.getNewPassword();
+        // 바꾸는 비밀번호
         String checkPassword = userRequestDto.getCheckPassword();
         // 바꾸는 비밀번호 확인
         validateNewPassword(newPassword, checkPassword);
-        log.info("확인 2");
-
+        // 바꾸는 비밀번호 인코딩해서 저장
         newPassword = passwordEncoder.encode(userRequestDto.getNewPassword());
         user.setPassword(newPassword);
-        log.info("확인 3");
         return new UserResponseDto(user);
     }
 

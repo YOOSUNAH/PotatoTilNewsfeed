@@ -1,5 +1,6 @@
 package com.example.potatotilnewsfeed.domain.comments.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -8,17 +9,17 @@ public class CommentController {
 
 
   @PostMapping("/tils/{tilId}/comments")
-  public String createdComments(@PathVariable) { // 댓글 작성
+  public String createdComments() { // 댓글 작성
     // @RequestBody  @ResponseBody  응답코드 : 200
+    public ResponseEntity<String> cre() {
+    suer.
+    }
 
   }
-
 
   @PutMapping("tils/{tilId}/comments/{commentId}")
   public String updatedComments() { // 댓글 수정
     // @RequestBody  @ResponseBody  응답코드 : 200
-
-
 
   }
 

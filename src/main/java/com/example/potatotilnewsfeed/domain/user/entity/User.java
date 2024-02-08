@@ -45,4 +45,11 @@ public class User {
         this.email = email;
         this.role = UserRoleEnum.USER;
     }
+
+    public void update(String nickname,String password, String introduce) {
+        this.nickname = nickname;
+        this.password = password;
+        this.introduce = introduce;
+
+    }
 }

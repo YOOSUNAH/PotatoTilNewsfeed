@@ -10,9 +10,9 @@ public class UserRequestDto {
 
     private String nickname;
     private String password;
-    private String email;
     private String introduce;
 
-
     // 생성자
+
+
 }

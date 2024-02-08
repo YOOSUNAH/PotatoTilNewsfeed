@@ -7,9 +7,11 @@ import com.example.potatotilnewsfeed.domain.user.entity.User;
 import com.example.potatotilnewsfeed.domain.user.repository.UserRepository;
 import com.example.potatotilnewsfeed.global.security.UserDetailsImpl;
 import java.util.Optional;
+import java.util.regex.Pattern;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -41,7 +43,6 @@ public class UserService {
             throw new DuplicateKeyException("중복된 사용자가 존재합니다.");
         }
     }
-
     public UserResponseDto getProfile(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         return new UserResponseDto((userDetails).getUser());
     }
@@ -57,4 +58,21 @@ public class UserService {
         user.setIntroduce(userRequestDto.getIntroduce());
         return new UserResponseDto(user);
     }
+
+    @Transactional
+    public void deleteProfile(UserDetailsImpl userDetails, UserRequestDto userRequestDto) {
+        Long userId = userDetails.getUser().getUserId();
+        User user = userRepository.findById(userId).orElseThrow(() -> new IllegalArgumentException("선택한 유저가 존재하지 않습니다."));
+        String password = userRequestDto.getPassword();
+        String checkPassword = user.getPassword();
+        validatePassword(password, checkPassword);
+        userRepository.delete(user);
+    }
+
+    public void validatePassword(String password, String checkPassword){
+        if(!passwordEncoder.matches(password,checkPassword)){
+            throw new BadCredentialsException("패스워드를 잘못 입력하셨습니다.");
+        }
+    }
+
 }

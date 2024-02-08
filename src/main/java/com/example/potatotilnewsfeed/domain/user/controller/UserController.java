@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -46,6 +47,8 @@ public class UserController {
     public static final String GET_PROFILE_FAIL = "프로필 조회 실패";
     public static final String UPDATE_PROFILE_SUCCESS = "프로필 수정 성공";
     public static final String UPDATE_PROFILE_FAIL = "프로필 수정 실패";
+    public static final String DELETE_PROFILE_SUCCESS = "프로필 삭제 성공";
+    public static final String DELETE_PROFILE_FAIL = "프로필 삭제 성공";
     public static final String PROFILE_PASSWORD_API = "프로필 비밀번호 변경 API";
     public static final String UPDATE_PROFILE_PASSWORD_SUCCESS = "프로필 수정 성공";
 
@@ -72,15 +75,11 @@ public class UserController {
     @PutMapping("/v1/users")
     public ResponseEntity<ResponseDto<UserResponseDto>> updateProfile(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
-        @RequestBody UserRequestDto userRequestDto
-    ) {
+        @RequestBody UserRequestDto userRequestDto) {
         log.info(PROFILE_API);
         try {
-
-
-            UserResponseDto userResponseDto = userService.updateProfile(userDetails, userRequestDto);
-
-
+            UserResponseDto userResponseDto = userService.updateProfile(userDetails,
+                userRequestDto);
             return ResponseEntity.ok()
                 .body(ResponseDto.<UserResponseDto>builder()
                     .message(UPDATE_PROFILE_SUCCESS)
@@ -94,5 +93,10 @@ public class UserController {
         }
     }
 
-
+    @DeleteMapping("/v1/users")
+    public void deleteProfile(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody UserRequestDto userRequestDto) {
+        log.info(PROFILE_API);
+        userService.deleteProfile(userDetails, userRequestDto);
+    }
 }
+

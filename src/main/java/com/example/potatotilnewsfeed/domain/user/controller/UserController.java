@@ -47,10 +47,9 @@ public class UserController {
     public static final String GET_PROFILE_FAIL = "프로필 조회 실패";
     public static final String UPDATE_PROFILE_SUCCESS = "프로필 수정 성공";
     public static final String UPDATE_PROFILE_FAIL = "프로필 수정 실패";
-    public static final String DELETE_PROFILE_SUCCESS = "프로필 삭제 성공";
-    public static final String DELETE_PROFILE_FAIL = "프로필 삭제 성공";
-    public static final String PROFILE_PASSWORD_API = "프로필 비밀번호 변경 API";
-    public static final String UPDATE_PROFILE_PASSWORD_SUCCESS = "프로필 수정 성공";
+    public static final String UPDATE_PROFILE_PASSWORD_API = "프로필 비밀번호 수정 API";
+    public static final String UPDATE_PROFILE_PASSWORD_SUCCESS = "프로필 비밀번호 수정 성공";
+    public static final String UPDATE_PROFILE_PASSWORD_FAIL = "프로필 비밀번호 수정 실패";
 
 
     @GetMapping("/v1/users")
@@ -89,6 +88,28 @@ public class UserController {
             return ResponseEntity.badRequest()
                 .body(ResponseDto.<UserResponseDto>builder()
                     .message(UPDATE_PROFILE_FAIL)
+                    .build());
+        }
+    }
+
+    @PutMapping("/v1/users/password")
+    public ResponseEntity<ResponseDto<UserResponseDto>> updatePassword(
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
+        @RequestBody UserRequestDto userRequestDto) {
+
+        log.info(UPDATE_PROFILE_PASSWORD_API);
+        try {
+            UserResponseDto userResponseDto = userService.updatePassword(userDetails,
+                userRequestDto);
+            return ResponseEntity.ok()
+                .body(ResponseDto.<UserResponseDto>builder()
+                    .message(UPDATE_PROFILE_PASSWORD_SUCCESS)
+                    .data(userResponseDto)
+                    .build());
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest()
+                .body(ResponseDto.<UserResponseDto>builder()
+                    .message(UPDATE_PROFILE_PASSWORD_FAIL)
                     .build());
         }
     }

@@ -9,8 +9,15 @@ import lombok.Setter;
 public class UserRequestDto {
 
     private String nickname;
-    private String password;
     private String introduce;
+
+    // 기존 비밀번호를 입력해주세요
+    private String password;
+    // 바꾸는 비밀번호를 입력해주세요
+    private String newPassword;
+    // 바꾸는 비밀번호를 한번 더 입력해주세요
+    private String checkPassword;
+
 
     // 생성자
 

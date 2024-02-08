@@ -1,17 +1,19 @@
 package com.example.potatotilnewsfeed.domain.til.controller;
 
+import com.example.potatotilnewsfeed.domain.til.dto.TilData;
 import com.example.potatotilnewsfeed.domain.til.dto.TilDto;
 import com.example.potatotilnewsfeed.domain.til.dto.TilResponseDto;
+import com.example.potatotilnewsfeed.domain.til.dto.TilUpdateRequestDto;
 import com.example.potatotilnewsfeed.domain.til.entity.Til;
 import com.example.potatotilnewsfeed.domain.til.service.TilService;
-import com.example.potatotilnewsfeed.domain.user.entity.User;
-import com.example.potatotilnewsfeed.global.dto.ResponseDto;
-import com.example.potatotilnewsfeed.global.security.UserDetailsImpl;
-import java.util.Collections;
+import jakarta.servlet.http.HttpServletResponse;
+import java.net.URI;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,12 +30,40 @@ public class TilController {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseDto<Til>> createPost(@RequestBody TilDto tilDto) {
-        Til post = tilService.createTilPost(tilDto);
-        ResponseDto<Til> response = ResponseDto.<Til>builder()
-            .data(post)
-            .message("게시물 생성 성공")
-            .build();
-        return ResponseEntity.ok(response);
+    public ResponseEntity<TilResponseDto> createTil(@RequestBody TilDto tilDto, HttpServletResponse response) {
+        Til createdTil = tilService.createTilPost(tilDto);
+
+        // Location 헤더 설정
+        URI location = URI.create(String.format("/v1/tils/%d", createdTil.getId()));
+        response.setHeader("Location", location.toString());
+
+        TilData tilData = new TilData(
+            createdTil.getId(),
+            createdTil.getTitle(),
+            createdTil.getContent(),
+            createdTil.getUser().getNickname(),
+            createdTil.getCreatedAt()
+        );
+        TilResponseDto responseDto = new TilResponseDto("TIL이 등록되었습니다.", List.of(tilData));
+
+        return ResponseEntity.created(location).body(responseDto);
+    }
+
+    @PutMapping("/v1/tils/{id}")
+    public ResponseEntity<TilResponseDto> updateTil(
+        @PathVariable Long id,
+        @RequestBody TilUpdateRequestDto requestDto) {
+
+        Til updatedTil = tilService.updateTilPost(id, requestDto);
+        TilData tilData = new TilData(
+            updatedTil.getId(),
+            updatedTil.getTitle(),
+            updatedTil.getContent(),
+            updatedTil.getUser().getNickname(),
+            updatedTil.getCreatedAt()
+        );
+
+        TilResponseDto responseDto = new TilResponseDto("TIL이 수정되었습니다.", List.of(tilData));
+        return ResponseEntity.ok().body(responseDto);
     }
 }

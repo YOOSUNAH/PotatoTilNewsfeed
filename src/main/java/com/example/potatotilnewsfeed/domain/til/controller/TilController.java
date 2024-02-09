@@ -4,6 +4,7 @@ import com.example.potatotilnewsfeed.domain.til.dto.GetTilListResponseDto;
 import com.example.potatotilnewsfeed.domain.til.dto.GetTilResponseDto;
 import com.example.potatotilnewsfeed.domain.til.dto.TilData;
 import com.example.potatotilnewsfeed.domain.til.dto.TilDto;
+import com.example.potatotilnewsfeed.domain.til.dto.TilLikeResponseDto;
 import com.example.potatotilnewsfeed.domain.til.dto.TilResponseDto;
 import com.example.potatotilnewsfeed.domain.til.dto.TilUpdateRequestDto;
 import com.example.potatotilnewsfeed.domain.til.entity.Til;
@@ -39,6 +40,8 @@ public class TilController {
     public static final String GET_ALL_TIL_SUCCESS = "TIL 전체 조회 성공";
     public static final String GET_TIL_SUCCESS = "TIL 선택 조회 성공";
     public static final String GET_TIL_BY_USER_SUCCESS = "TIL 유저 조회 성공";
+    public static final String POST_TIL_LIKE_API = "TIL 좋아요 API";
+    public static final String POST_TIL_LIKE_SUCCESS = "TIL 좋아요!";
 
     @Autowired
     public TilController(TilService tilService) {
@@ -136,6 +139,20 @@ public class TilController {
         return ResponseEntity.ok()
             .body(ResponseDto.<GetTilListResponseDto>builder()
                 .message(GET_TIL_BY_USER_SUCCESS)
+                .data(responseDto)
+                .build());
+    }
+
+    @PostMapping("/v1/tils/{tilId}/likes")
+    public ResponseEntity<ResponseDto<TilLikeResponseDto>> likeTil(@PathVariable Long tilId,
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        log.info(POST_TIL_LIKE_API);
+
+        TilLikeResponseDto responseDto = tilService.likeTil(tilId, userDetails.getUser());
+
+        return ResponseEntity.ok()
+            .body(ResponseDto.<TilLikeResponseDto>builder()
+                .message(POST_TIL_LIKE_SUCCESS)
                 .data(responseDto)
                 .build());
     }

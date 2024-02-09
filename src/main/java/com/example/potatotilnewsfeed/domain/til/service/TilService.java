@@ -30,6 +30,7 @@ public class TilService {
 
     private final TilRepository tilRepository;
     private final UserRepository userRepository;
+    private final TilLikeRepository tilLikeRepository;
 
     public Til createTilPost(TilDto tilDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -95,6 +96,16 @@ public class TilService {
             .map(til -> new GetTilResponseDto(til, user)).toList();
 
         return new GetTilListResponseDto(responseDtoList, user);
+    }
+
+    public TilLikeResponseDto likeTil(Long tilId, User user) {
+        Til til = validateTil(tilId);
+
+        TilLike tilLike = new TilLike(user, til);
+
+        tilLikeRepository.save(tilLike);
+
+        return new TilLikeResponseDto(user.getUserId(), tilId);
     }
 
     // 해당 Til Id 유효성 검증

@@ -5,13 +5,17 @@ import com.example.potatotilnewsfeed.domain.til.dto.TilDto;
 import com.example.potatotilnewsfeed.domain.til.dto.TilResponseDto;
 import com.example.potatotilnewsfeed.domain.til.dto.TilUpdateRequestDto;
 import com.example.potatotilnewsfeed.domain.til.entity.Til;
+import com.example.potatotilnewsfeed.domain.til.exception.CannotUpdateTilException;
+import com.example.potatotilnewsfeed.domain.til.exception.TilNotFoundException;
 import com.example.potatotilnewsfeed.domain.til.service.TilService;
 import jakarta.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -71,5 +75,15 @@ public class TilController {
     public ResponseEntity<Void> deleteTil(@PathVariable Long tilId) {
         tilService.deleteTil(tilId);
         return ResponseEntity.noContent().build();
+    }
+
+    @ExceptionHandler(TilNotFoundException.class)
+    public ResponseEntity<String> handleTilNotFoundException(TilNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(CannotUpdateTilException.class)
+    public ResponseEntity<String> handleCannotUpdateTilException(CannotUpdateTilException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 }

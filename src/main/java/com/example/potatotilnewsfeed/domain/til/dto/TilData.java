@@ -9,6 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TilData {
+
     private Long tilId;
     private String title;
     private String content;

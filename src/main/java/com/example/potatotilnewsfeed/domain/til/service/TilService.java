@@ -3,6 +3,8 @@ package com.example.potatotilnewsfeed.domain.til.service;
 import com.example.potatotilnewsfeed.domain.til.dto.TilDto;
 import com.example.potatotilnewsfeed.domain.til.dto.TilUpdateRequestDto;
 import com.example.potatotilnewsfeed.domain.til.entity.Til;
+import com.example.potatotilnewsfeed.domain.til.exception.CannotUpdateTilException;
+import com.example.potatotilnewsfeed.domain.til.exception.TilNotFoundException;
 import com.example.potatotilnewsfeed.domain.til.repository.TilRepository;
 import com.example.potatotilnewsfeed.domain.user.entity.User;
 import com.example.potatotilnewsfeed.domain.user.repository.UserRepository;
@@ -37,7 +39,7 @@ public class TilService {
 
     public Til updateTilPost(Long tilId, TilUpdateRequestDto requestDto) {
         Til til = tilRepository.findById(tilId)
-            .orElseThrow(() -> new RuntimeException("Til을 찾을 수 없습니다."));
+            .orElseThrow(() -> new TilNotFoundException("Til을 찾을 수 없습니다."));
 
         // 현재 날짜와 글이 작성된 날짜를 LocalDate로 변환
         LocalDate today = LocalDate.now();
@@ -45,7 +47,7 @@ public class TilService {
 
         // 날짜 비교
         if (!createdAt.equals(today)) {
-            throw new RuntimeException("수정할 수 없는 날짜입니다.");
+            throw new CannotUpdateTilException("수정할 수 없는 날짜입니다.");
         }
 
         til.setTitle(requestDto.getTitle());

@@ -52,4 +52,8 @@ public class TilService {
         til.setContent(requestDto.getContent());
         return tilRepository.save(til);
     }
+
+    public void deleteTil(Long tilId) {
+        tilRepository.deleteById(tilId);
+    }
 }

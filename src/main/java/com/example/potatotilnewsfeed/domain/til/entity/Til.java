@@ -1,6 +1,8 @@
 package com.example.potatotilnewsfeed.domain.til.entity;
 
 import com.example.potatotilnewsfeed.domain.user.entity.User;
+import com.example.potatotilnewsfeed.global.entity.Timestamped;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -19,15 +21,15 @@ import lombok.Setter;
 @Entity
 @Table(name = "TB_TIL")
 @NoArgsConstructor
-public class Til {
+public class Til extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String title;
     private String content;
-    private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
@@ -37,7 +39,6 @@ public class Til {
         this.title = title;
         this.content = content;
         this.user = user;
-        this.createdAt = LocalDateTime.now();
     }
 
 }

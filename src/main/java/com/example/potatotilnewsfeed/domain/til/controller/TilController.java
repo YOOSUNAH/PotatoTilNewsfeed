@@ -11,6 +11,7 @@ import com.example.potatotilnewsfeed.domain.til.exception.CannotUpdateTilExcepti
 import com.example.potatotilnewsfeed.domain.til.exception.TilNotFoundException;
 import com.example.potatotilnewsfeed.domain.til.service.TilService;
 import com.example.potatotilnewsfeed.global.dto.ResponseDto;
+import com.example.potatotilnewsfeed.global.security.UserDetailsImpl;
 import jakarta.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.util.List;
@@ -18,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +38,7 @@ public class TilController {
     public static final String GET_TIL_API = "TIL 조회 API";
     public static final String GET_ALL_TIL_SUCCESS = "TIL 전체 조회 성공";
     public static final String GET_TIL_SUCCESS = "TIL 선택 조회 성공";
+    public static final String GET_TIL_BY_USER_SUCCESS = "TIL 유저 조회 성공";
 
     @Autowired
     public TilController(TilService tilService) {
@@ -119,6 +122,20 @@ public class TilController {
         return ResponseEntity.ok()
             .body(ResponseDto.<GetTilResponseDto>builder()
                 .message(GET_TIL_SUCCESS)
+                .data(responseDto)
+                .build());
+    }
+
+    @GetMapping("/v1/tils")
+    public ResponseEntity<ResponseDto<GetTilListResponseDto>> getTil(
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        log.info(GET_TIL_API);
+
+        GetTilListResponseDto responseDto = tilService.getTil(userDetails.getUser());
+
+        return ResponseEntity.ok()
+            .body(ResponseDto.<GetTilListResponseDto>builder()
+                .message(GET_TIL_BY_USER_SUCCESS)
                 .data(responseDto)
                 .build());
     }

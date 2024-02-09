@@ -3,8 +3,10 @@ package com.example.potatotilnewsfeed.domain.til.service;
 import com.example.potatotilnewsfeed.domain.til.dto.GetTilListResponseDto;
 import com.example.potatotilnewsfeed.domain.til.dto.GetTilResponseDto;
 import com.example.potatotilnewsfeed.domain.til.dto.TilDto;
+import com.example.potatotilnewsfeed.domain.til.dto.TilLikeResponseDto;
 import com.example.potatotilnewsfeed.domain.til.dto.TilUpdateRequestDto;
 import com.example.potatotilnewsfeed.domain.til.entity.Til;
+import com.example.potatotilnewsfeed.domain.til.entity.TilLike;
 import com.example.potatotilnewsfeed.domain.til.exception.CannotUpdateTilException;
 import com.example.potatotilnewsfeed.domain.til.exception.TilNotFoundException;
 import com.example.potatotilnewsfeed.domain.til.repository.TilLikeRepository;
@@ -86,5 +88,19 @@ public class TilService {
         );
 
         return new GetTilResponseDto(til, til.getUser());
+    }
+
+    public GetTilListResponseDto getTil(User user) {
+        List<GetTilResponseDto> responseDtoList = tilRepository.findAllByUser(user).stream()
+            .map(til -> new GetTilResponseDto(til, user)).toList();
+
+        return new GetTilListResponseDto(responseDtoList, user);
+    }
+
+    // 해당 Til Id 유효성 검증
+    private Til validateTil(Long tilId) {
+        return tilRepository.findById(tilId).orElseThrow(
+            () -> new NoSuchElementException(tilId + " ID를 가진 TIL을 찾을 수 없습니다.")
+        );
     }
 }

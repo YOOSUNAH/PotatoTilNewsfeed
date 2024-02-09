@@ -37,12 +37,6 @@ public class TilController {
     private final TilService tilService;
 
     public static final String GET_TIL_API = "TIL 조회 API";
-    public static final String GET_ALL_TIL_SUCCESS = "TIL 전체 조회 성공";
-    public static final String GET_TIL_SUCCESS = "TIL 선택 조회 성공";
-    public static final String GET_TIL_BY_USER_SUCCESS = "TIL 유저 조회 성공";
-    public static final String GET_TIL_BY_LIKE_SUCCESS = "TIL 좋아요 조회 성공";
-    public static final String POST_TIL_LIKE_API = "TIL 좋아요 API";
-    public static final String POST_TIL_LIKE_SUCCESS = "TIL 좋아요!";
 
     @Autowired
     public TilController(TilService tilService) {
@@ -100,7 +94,7 @@ public class TilController {
         List<GetTilListResponseDto> responseDto = tilService.getAllTil();
 
         return ResponseEntity.ok().body(
-            ResponseDto.<List<GetTilListResponseDto>>builder().message(GET_ALL_TIL_SUCCESS)
+            ResponseDto.<List<GetTilListResponseDto>>builder().message("TIL 전체 조회 성공")
                 .data(responseDto).build());
     }
 
@@ -111,7 +105,7 @@ public class TilController {
         GetTilResponseDto responseDto = tilService.getTil(tilId);
 
         return ResponseEntity.ok().body(
-            ResponseDto.<GetTilResponseDto>builder().message(GET_TIL_SUCCESS).data(responseDto)
+            ResponseDto.<GetTilResponseDto>builder().message("TIL 선택 조회 성공").data(responseDto)
                 .build());
     }
 
@@ -123,19 +117,19 @@ public class TilController {
         GetTilListResponseDto responseDto = tilService.getTil(userDetails.getUser());
 
         return ResponseEntity.ok().body(
-            ResponseDto.<GetTilListResponseDto>builder().message(GET_TIL_BY_USER_SUCCESS)
+            ResponseDto.<GetTilListResponseDto>builder().message("TIL 유저 조회 성공")
                 .data(responseDto).build());
     }
 
     @PostMapping("/v1/tils/{tilId}/likes")
     public ResponseEntity<ResponseDto<TilLikeResponseDto>> likeTil(@PathVariable Long tilId,
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
-        log.info(POST_TIL_LIKE_API);
+        log.info("TIL 좋아요 API");
 
         TilLikeResponseDto responseDto = tilService.likeTil(tilId, userDetails.getUser());
 
         return ResponseEntity.ok().body(
-            ResponseDto.<TilLikeResponseDto>builder().message(POST_TIL_LIKE_SUCCESS)
+            ResponseDto.<TilLikeResponseDto>builder().message("TIL 좋아요!")
                 .data(responseDto).build());
     }
 
@@ -147,7 +141,7 @@ public class TilController {
         GetTilListResponseDto responseDto = tilService.getLikeTil(userDetails.getUser());
 
         return ResponseEntity.ok().body(
-            ResponseDto.<GetTilListResponseDto>builder().message(GET_TIL_BY_LIKE_SUCCESS)
+            ResponseDto.<GetTilListResponseDto>builder().message("TIL 좋아요 조회 성공")
                 .data(responseDto).build());
     }
 

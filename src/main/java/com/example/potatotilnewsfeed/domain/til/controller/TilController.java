@@ -40,6 +40,7 @@ public class TilController {
     public static final String GET_ALL_TIL_SUCCESS = "TIL 전체 조회 성공";
     public static final String GET_TIL_SUCCESS = "TIL 선택 조회 성공";
     public static final String GET_TIL_BY_USER_SUCCESS = "TIL 유저 조회 성공";
+    public static final String GET_TIL_BY_LIKE_SUCCESS = "TIL 좋아요 조회 성공";
     public static final String POST_TIL_LIKE_API = "TIL 좋아요 API";
     public static final String POST_TIL_LIKE_SUCCESS = "TIL 좋아요!";
 
@@ -153,6 +154,20 @@ public class TilController {
         return ResponseEntity.ok()
             .body(ResponseDto.<TilLikeResponseDto>builder()
                 .message(POST_TIL_LIKE_SUCCESS)
+                .data(responseDto)
+                .build());
+    }
+
+    @GetMapping("/v1/tils/likes")
+    public ResponseEntity<ResponseDto<GetTilListResponseDto>> getLikeTil(
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        log.info(GET_TIL_API);
+
+        GetTilListResponseDto responseDto = tilService.getLikeTil(userDetails.getUser());
+
+        return ResponseEntity.ok()
+            .body(ResponseDto.<GetTilListResponseDto>builder()
+                .message(GET_TIL_BY_LIKE_SUCCESS)
                 .data(responseDto)
                 .build());
     }

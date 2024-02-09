@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -106,6 +107,24 @@ public class TilService {
         tilLikeRepository.save(tilLike);
 
         return new TilLikeResponseDto(user.getUserId(), tilId);
+    }
+
+    public GetTilListResponseDto getLikeTil(User user) {
+        List<TilLike> tilLikeList = tilLikeRepository.findAllByUser(user).orElseThrow(
+            () -> new NoSuchElementException(user.getUserId() + " ID가 좋아요한 TIL을 찾을 수 없습니다.")
+        );
+
+        List<Til> tilList = new ArrayList<>();
+
+        for (TilLike tilLike : tilLikeList) {
+            Optional<Til> til = tilRepository.findById(tilLike.getTil().getId());
+            til.ifPresent(tilList::add);
+        }
+
+        List<GetTilResponseDto> responseDtoList = tilList.stream()
+            .map(til -> new GetTilResponseDto(til, user)).toList();
+
+        return new GetTilListResponseDto(responseDtoList, user);
     }
 
     // 해당 Til Id 유효성 검증

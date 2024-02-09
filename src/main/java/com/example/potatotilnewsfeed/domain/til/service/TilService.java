@@ -140,4 +140,17 @@ public class TilService {
             () -> new NoSuchElementException(tilId + " ID를 가진 TIL을 찾을 수 없습니다.")
         );
     }
+
+    @Transactional
+    public Long deleteLikeTil(Long tilId, User user) {
+        Til til = validateTil(tilId);
+
+        TilLike tilLike = tilLikeRepository.findByTilAndUser(til, user).orElseThrow(
+            () -> new NoSuchElementException("해당 TIL을 좋아요하지 않았습니다.")
+        );
+
+        tilLikeRepository.delete(tilLike);
+
+        return tilLike.getTilLikeId();
+    }
 }

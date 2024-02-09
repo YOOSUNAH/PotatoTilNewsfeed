@@ -58,31 +58,20 @@ public class TilController {
         URI location = URI.create(String.format("/v1/tils/%d", createdTil.getId()));
         response.setHeader("Location", location.toString());
 
-        TilData tilData = new TilData(
-            createdTil.getId(),
-            createdTil.getTitle(),
-            createdTil.getContent(),
-            createdTil.getUser().getNickname(),
-            createdTil.getCreatedAt()
-        );
+        TilData tilData = new TilData(createdTil.getId(), createdTil.getTitle(),
+            createdTil.getContent(), createdTil.getUser().getNickname(), createdTil.getCreatedAt());
         TilResponseDto responseDto = new TilResponseDto("TIL이 등록되었습니다.", List.of(tilData));
 
         return ResponseEntity.created(location).body(responseDto);
     }
 
     @PatchMapping("/v1/tils/{tilId}")
-    public ResponseEntity<TilResponseDto> patchTil(
-        @PathVariable("tilId") Long tilId,
+    public ResponseEntity<TilResponseDto> patchTil(@PathVariable("tilId") Long tilId,
         @RequestBody TilUpdateRequestDto requestDto) {
 
         Til updatedTil = tilService.updateTilPost(tilId, requestDto);
-        TilData tilData = new TilData(
-            updatedTil.getId(),
-            updatedTil.getTitle(),
-            updatedTil.getContent(),
-            updatedTil.getUser().getNickname(),
-            updatedTil.getCreatedAt()
-        );
+        TilData tilData = new TilData(updatedTil.getId(), updatedTil.getTitle(),
+            updatedTil.getContent(), updatedTil.getUser().getNickname(), updatedTil.getCreatedAt());
 
         TilResponseDto responseDto = new TilResponseDto("TIL이 수정되었습니다.", List.of(tilData));
         return ResponseEntity.ok().body(responseDto);
@@ -110,11 +99,9 @@ public class TilController {
 
         List<GetTilListResponseDto> responseDto = tilService.getAllTil();
 
-        return ResponseEntity.ok()
-            .body(ResponseDto.<List<GetTilListResponseDto>>builder()
-                .message(GET_ALL_TIL_SUCCESS)
-                .data(responseDto)
-                .build());
+        return ResponseEntity.ok().body(
+            ResponseDto.<List<GetTilListResponseDto>>builder().message(GET_ALL_TIL_SUCCESS)
+                .data(responseDto).build());
     }
 
     @GetMapping("/v1/tils/{tilId}")
@@ -123,10 +110,8 @@ public class TilController {
 
         GetTilResponseDto responseDto = tilService.getTil(tilId);
 
-        return ResponseEntity.ok()
-            .body(ResponseDto.<GetTilResponseDto>builder()
-                .message(GET_TIL_SUCCESS)
-                .data(responseDto)
+        return ResponseEntity.ok().body(
+            ResponseDto.<GetTilResponseDto>builder().message(GET_TIL_SUCCESS).data(responseDto)
                 .build());
     }
 
@@ -137,11 +122,9 @@ public class TilController {
 
         GetTilListResponseDto responseDto = tilService.getTil(userDetails.getUser());
 
-        return ResponseEntity.ok()
-            .body(ResponseDto.<GetTilListResponseDto>builder()
-                .message(GET_TIL_BY_USER_SUCCESS)
-                .data(responseDto)
-                .build());
+        return ResponseEntity.ok().body(
+            ResponseDto.<GetTilListResponseDto>builder().message(GET_TIL_BY_USER_SUCCESS)
+                .data(responseDto).build());
     }
 
     @PostMapping("/v1/tils/{tilId}/likes")
@@ -151,11 +134,9 @@ public class TilController {
 
         TilLikeResponseDto responseDto = tilService.likeTil(tilId, userDetails.getUser());
 
-        return ResponseEntity.ok()
-            .body(ResponseDto.<TilLikeResponseDto>builder()
-                .message(POST_TIL_LIKE_SUCCESS)
-                .data(responseDto)
-                .build());
+        return ResponseEntity.ok().body(
+            ResponseDto.<TilLikeResponseDto>builder().message(POST_TIL_LIKE_SUCCESS)
+                .data(responseDto).build());
     }
 
     @GetMapping("/v1/tils/likes")
@@ -165,10 +146,20 @@ public class TilController {
 
         GetTilListResponseDto responseDto = tilService.getLikeTil(userDetails.getUser());
 
-        return ResponseEntity.ok()
-            .body(ResponseDto.<GetTilListResponseDto>builder()
-                .message(GET_TIL_BY_LIKE_SUCCESS)
-                .data(responseDto)
-                .build());
+        return ResponseEntity.ok().body(
+            ResponseDto.<GetTilListResponseDto>builder().message(GET_TIL_BY_LIKE_SUCCESS)
+                .data(responseDto).build());
+    }
+
+    @DeleteMapping("/v1/tils/{tilId}/likes")
+    public ResponseEntity<ResponseDto<Long>> deleteLikeTil(@PathVariable Long tilId,
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        log.info("TIL 좋아요 삭제 API");
+
+        Long responseId = tilService.deleteLikeTil(tilId, userDetails.getUser());
+
+        return ResponseEntity.ok().body(
+            ResponseDto.<Long>builder().message("TIL 좋아요 삭제 성공")
+                .data(responseId).build());
     }
 }

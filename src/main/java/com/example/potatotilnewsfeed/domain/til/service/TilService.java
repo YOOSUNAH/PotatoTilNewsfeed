@@ -3,10 +3,8 @@ package com.example.potatotilnewsfeed.domain.til.service;
 import com.example.potatotilnewsfeed.domain.til.dto.GetTilListResponseDto;
 import com.example.potatotilnewsfeed.domain.til.dto.GetTilResponseDto;
 import com.example.potatotilnewsfeed.domain.til.dto.TilDto;
-import com.example.potatotilnewsfeed.domain.til.dto.TilLikeResponseDto;
 import com.example.potatotilnewsfeed.domain.til.dto.TilUpdateRequestDto;
 import com.example.potatotilnewsfeed.domain.til.entity.Til;
-import com.example.potatotilnewsfeed.domain.til.entity.TilLike;
 import com.example.potatotilnewsfeed.domain.til.exception.CannotUpdateTilException;
 import com.example.potatotilnewsfeed.domain.til.exception.TilNotFoundException;
 import com.example.potatotilnewsfeed.domain.til.repository.TilLikeRepository;
@@ -17,7 +15,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -31,7 +28,6 @@ public class TilService {
 
     private final TilRepository tilRepository;
     private final UserRepository userRepository;
-    private final TilLikeRepository tilLikeRepository;
 
     public Til createTilPost(TilDto tilDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -82,5 +78,13 @@ public class TilService {
         return new GetTilListResponseDto(
             tilRepository.findAllByUser(user).stream().map(til -> new GetTilResponseDto(til, user))
                 .toList(), user);
+    }
+
+    public GetTilResponseDto getTil(Long tilId) {
+        Til til = tilRepository.findById(tilId).orElseThrow(
+            () -> new NoSuchElementException(tilId + " ID를 가진 TIL을 찾을 수 없습니다.")
+        );
+
+        return new GetTilResponseDto(til, til.getUser());
     }
 }

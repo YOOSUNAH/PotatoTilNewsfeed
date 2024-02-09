@@ -4,7 +4,6 @@ import com.example.potatotilnewsfeed.domain.til.dto.GetTilListResponseDto;
 import com.example.potatotilnewsfeed.domain.til.dto.GetTilResponseDto;
 import com.example.potatotilnewsfeed.domain.til.dto.TilData;
 import com.example.potatotilnewsfeed.domain.til.dto.TilDto;
-import com.example.potatotilnewsfeed.domain.til.dto.TilLikeResponseDto;
 import com.example.potatotilnewsfeed.domain.til.dto.TilResponseDto;
 import com.example.potatotilnewsfeed.domain.til.dto.TilUpdateRequestDto;
 import com.example.potatotilnewsfeed.domain.til.entity.Til;
@@ -12,20 +11,17 @@ import com.example.potatotilnewsfeed.domain.til.exception.CannotUpdateTilExcepti
 import com.example.potatotilnewsfeed.domain.til.exception.TilNotFoundException;
 import com.example.potatotilnewsfeed.domain.til.service.TilService;
 import com.example.potatotilnewsfeed.global.dto.ResponseDto;
-import com.example.potatotilnewsfeed.global.security.UserDetailsImpl;
 import jakarta.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.util.List;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -39,6 +35,7 @@ public class TilController {
 
     public static final String GET_TIL_API = "TIL 조회 API";
     public static final String GET_ALL_TIL_SUCCESS = "TIL 전체 조회 성공";
+    public static final String GET_TIL_SUCCESS = "TIL 선택 조회 성공";
 
     @Autowired
     public TilController(TilService tilService) {
@@ -109,6 +106,19 @@ public class TilController {
         return ResponseEntity.ok()
             .body(ResponseDto.<List<GetTilListResponseDto>>builder()
                 .message(GET_ALL_TIL_SUCCESS)
+                .data(responseDto)
+                .build());
+    }
+
+    @GetMapping("/v1/tils/{tilId}")
+    public ResponseEntity<ResponseDto<GetTilResponseDto>> getTil(@PathVariable Long tilId) {
+        log.info(GET_TIL_API);
+
+        GetTilResponseDto responseDto = tilService.getTil(tilId);
+
+        return ResponseEntity.ok()
+            .body(ResponseDto.<GetTilResponseDto>builder()
+                .message(GET_TIL_SUCCESS)
                 .data(responseDto)
                 .build());
     }

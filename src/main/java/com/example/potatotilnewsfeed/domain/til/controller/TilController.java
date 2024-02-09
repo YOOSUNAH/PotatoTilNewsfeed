@@ -128,7 +128,9 @@ public class TilController {
 
         TilLikeResponseDto responseDto = tilService.likeTil(tilId, userDetails.getUser());
 
-        return ResponseEntity.ok().body(
+        URI location = URI.create(String.format("/v1/tils/%d", responseDto.getTilId()));
+
+        return ResponseEntity.created(location).body(
             ResponseDto.<TilLikeResponseDto>builder().message("TIL 좋아요!")
                 .data(responseDto).build());
     }
@@ -147,13 +149,15 @@ public class TilController {
 
     @DeleteMapping("/v1/tils/{tilId}/likes")
     public ResponseEntity<ResponseDto<Long>> deleteLikeTil(@PathVariable Long tilId,
-        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
+        HttpServletResponse response) {
         log.info("TIL 좋아요 삭제 API");
 
-        Long responseId = tilService.deleteLikeTil(tilId, userDetails.getUser());
+        tilService.deleteLikeTil(tilId, userDetails.getUser());
 
-        return ResponseEntity.ok().body(
-            ResponseDto.<Long>builder().message("TIL 좋아요 삭제 성공")
-                .data(responseId).build());
+        URI location = URI.create("/v1/tils/all");
+        response.setHeader("Location", location.toString());
+
+        return ResponseEntity.noContent().build();
     }
 }

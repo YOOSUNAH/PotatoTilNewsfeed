@@ -19,14 +19,12 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TilService {
@@ -142,7 +140,7 @@ public class TilService {
     }
 
     @Transactional
-    public Long deleteLikeTil(Long tilId, User user) {
+    public void deleteLikeTil(Long tilId, User user) {
         Til til = validateTil(tilId);
 
         TilLike tilLike = tilLikeRepository.findByTilAndUser(til, user).orElseThrow(
@@ -150,7 +148,5 @@ public class TilService {
         );
 
         tilLikeRepository.delete(tilLike);
-
-        return tilLike.getTilLikeId();
     }
 }

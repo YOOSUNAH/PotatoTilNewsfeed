@@ -1,30 +1,37 @@
 package com.example.potatotilnewsfeed.domain.til.service;
 
+import com.example.potatotilnewsfeed.domain.til.dto.GetTilListResponseDto;
+import com.example.potatotilnewsfeed.domain.til.dto.GetTilResponseDto;
 import com.example.potatotilnewsfeed.domain.til.dto.TilDto;
+import com.example.potatotilnewsfeed.domain.til.dto.TilLikeResponseDto;
 import com.example.potatotilnewsfeed.domain.til.dto.TilUpdateRequestDto;
 import com.example.potatotilnewsfeed.domain.til.entity.Til;
+import com.example.potatotilnewsfeed.domain.til.entity.TilLike;
 import com.example.potatotilnewsfeed.domain.til.exception.CannotUpdateTilException;
 import com.example.potatotilnewsfeed.domain.til.exception.TilNotFoundException;
+import com.example.potatotilnewsfeed.domain.til.repository.TilLikeRepository;
 import com.example.potatotilnewsfeed.domain.til.repository.TilRepository;
 import com.example.potatotilnewsfeed.domain.user.entity.User;
 import com.example.potatotilnewsfeed.domain.user.repository.UserRepository;
 import java.time.LocalDate;
-import org.springframework.beans.factory.annotation.Autowired;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class TilService {
 
     private final TilRepository tilRepository;
     private final UserRepository userRepository;
-
-    @Autowired
-    public TilService(TilRepository tilRepository, UserRepository userRepository) {
-        this.tilRepository = tilRepository;
-        this.userRepository = userRepository;
-    }
+    private final TilLikeRepository tilLikeRepository;
 
     public Til createTilPost(TilDto tilDto) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -57,5 +64,23 @@ public class TilService {
 
     public void deleteTil(Long tilId) {
         tilRepository.deleteById(tilId);
+    }
+
+    public List<GetTilListResponseDto> getAllTil() {
+        List<User> userList = userRepository.findAll();
+
+        List<GetTilListResponseDto> getTilListResponseDtoList = new ArrayList<>();
+
+        for (User user : userList) {
+            getTilListResponseDtoList.add(getAllBy(user));
+        }
+
+        return getTilListResponseDtoList;
+    }
+
+    private GetTilListResponseDto getAllBy(User user) {
+        return new GetTilListResponseDto(
+            tilRepository.findAllByUser(user).stream().map(til -> new GetTilResponseDto(til, user))
+                .toList(), user);
     }
 }

@@ -11,7 +11,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,10 +28,12 @@ public class Til extends Timestamped {
 
     @Column(nullable = false)
     private String title;
+
+    @Column(nullable = false)
     private String content;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "userId", nullable = false)
     private User user;
 
     public Til(String title, String content, User user) {
@@ -40,5 +41,4 @@ public class Til extends Timestamped {
         this.content = content;
         this.user = user;
     }
-
 }

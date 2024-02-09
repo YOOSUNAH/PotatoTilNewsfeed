@@ -1,31 +1,44 @@
 package com.example.potatotilnewsfeed.domain.til.controller;
 
+import com.example.potatotilnewsfeed.domain.til.dto.GetTilListResponseDto;
+import com.example.potatotilnewsfeed.domain.til.dto.GetTilResponseDto;
 import com.example.potatotilnewsfeed.domain.til.dto.TilData;
 import com.example.potatotilnewsfeed.domain.til.dto.TilDto;
+import com.example.potatotilnewsfeed.domain.til.dto.TilLikeResponseDto;
 import com.example.potatotilnewsfeed.domain.til.dto.TilResponseDto;
 import com.example.potatotilnewsfeed.domain.til.dto.TilUpdateRequestDto;
 import com.example.potatotilnewsfeed.domain.til.entity.Til;
 import com.example.potatotilnewsfeed.domain.til.exception.CannotUpdateTilException;
 import com.example.potatotilnewsfeed.domain.til.exception.TilNotFoundException;
 import com.example.potatotilnewsfeed.domain.til.service.TilService;
+import com.example.potatotilnewsfeed.global.dto.ResponseDto;
+import com.example.potatotilnewsfeed.global.security.UserDetailsImpl;
 import jakarta.servlet.http.HttpServletResponse;
 import java.net.URI;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+@Slf4j
 @RestController
 public class TilController {
 
     private final TilService tilService;
+
+    public static final String GET_TIL_API = "TIL 조회 API";
+    public static final String GET_ALL_TIL_SUCCESS = "TIL 전체 조회 성공";
 
     @Autowired
     public TilController(TilService tilService) {
@@ -33,8 +46,8 @@ public class TilController {
     }
 
     @PostMapping("/v1/tils")
-    public ResponseEntity<TilResponseDto> createTil(
-        @RequestBody TilDto tilDto, HttpServletResponse response) {
+    public ResponseEntity<TilResponseDto> createTil(@RequestBody TilDto tilDto,
+        HttpServletResponse response) {
         Til createdTil = tilService.createTilPost(tilDto);
 
         // Location 헤더 설정
@@ -85,5 +98,18 @@ public class TilController {
     @ExceptionHandler(CannotUpdateTilException.class)
     public ResponseEntity<String> handleCannotUpdateTilException(CannotUpdateTilException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+
+    @GetMapping("/v1/tils/all")
+    public ResponseEntity<ResponseDto<List<GetTilListResponseDto>>> getAllTil() {
+        log.info(GET_TIL_API);
+
+        List<GetTilListResponseDto> responseDto = tilService.getAllTil();
+
+        return ResponseEntity.ok()
+            .body(ResponseDto.<List<GetTilListResponseDto>>builder()
+                .message(GET_ALL_TIL_SUCCESS)
+                .data(responseDto)
+                .build());
     }
 }

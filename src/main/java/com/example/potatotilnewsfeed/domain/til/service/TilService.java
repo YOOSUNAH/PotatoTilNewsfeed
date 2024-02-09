@@ -20,9 +20,11 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -99,8 +101,13 @@ public class TilService {
         return new GetTilListResponseDto(responseDtoList, user);
     }
 
+    @Transactional
     public TilLikeResponseDto likeTil(Long tilId, User user) {
         Til til = validateTil(tilId);
+        
+        if(tilLikeRepository.findByTilAndUser(til, user).isPresent()) {
+            throw new DuplicateKeyException("이미 좋아요한 TIL 입니다.");
+        }
 
         TilLike tilLike = new TilLike(user, til);
 

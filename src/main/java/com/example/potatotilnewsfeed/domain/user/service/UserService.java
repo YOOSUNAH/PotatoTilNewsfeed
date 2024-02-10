@@ -47,7 +47,7 @@ public class UserService {
     public UserResponseDto getUser(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         Long userId = userDetails.getUser().getUserId();
         User user = userRepository.findById(userId)
-            .orElseThrow(() -> new UserNotFoundException("선택한 유저가 존재하지 않습니다."));
+            .orElseThrow(() -> new IllegalArgumentException("선택한 유저가 존재하지 않습니다."));
         return new UserResponseDto(user);
     }
 
@@ -58,7 +58,7 @@ public class UserService {
         Long userId = userDetails.getUser().getUserId();
         // DB에 접근
         User user = userRepository.findById(userId)
-            .orElseThrow(() -> new UserNotFoundException("선택한 유저가 존재하지 않습니다."));
+            .orElseThrow(() -> new IllegalArgumentException("선택한 유저가 존재하지 않습니다."));
         // 변경
         user.setNickname(userRequestDto.getNickname());
         user.setIntroduce(userRequestDto.getIntroduce());
@@ -69,7 +69,7 @@ public class UserService {
     public UserResponseDto updatePassword(UserDetailsImpl userDetails, UserRequestDto userRequestDto) {
         Long userId = userDetails.getUser().getUserId();
         User user = userRepository.findById(userId)
-            .orElseThrow(() -> new UserNotFoundException("선택한 유저가 존재하지 않습니다."));
+            .orElseThrow(() -> new IllegalArgumentException("선택한 유저가 존재하지 않습니다."));
         // 기존 비밀번호 가져오기
         String currentPassword = user.getPassword();
         // 기존 비밀번호를 입력해주세요 (입력받은 값)
@@ -92,7 +92,7 @@ public class UserService {
     public void deleteUser(UserDetailsImpl userDetails, UserRequestDto userRequestDto) {
         Long userId = userDetails.getUser().getUserId();
         User user = userRepository.findById(userId)
-            .orElseThrow(() -> new UserNotFoundException("선택한 유저가 존재하지 않습니다."));
+            .orElseThrow(() -> new IllegalArgumentException("선택한 유저가 존재하지 않습니다."));
         String password = userRequestDto.getPassword();
         String checkPassword = user.getPassword();
         // raw  , check (인코딩 된것)

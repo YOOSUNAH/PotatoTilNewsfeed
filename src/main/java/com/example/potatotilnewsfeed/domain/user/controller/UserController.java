@@ -53,11 +53,11 @@ public class UserController {
 
 
     @GetMapping("/v1/users")
-    public ResponseEntity<ResponseDto<UserResponseDto>> getProfile(
+    public ResponseEntity<ResponseDto<UserResponseDto>> getUser(
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
         log.info(PROFILE_API);
         try {
-            UserResponseDto userResponseDto = userService.getProfile(userDetails);
+            UserResponseDto userResponseDto = userService.getUser(userDetails);
             return ResponseEntity.ok()
                 .body(ResponseDto.<UserResponseDto>builder()
                     .message(GET_PROFILE_SUCCESS)
@@ -72,12 +72,12 @@ public class UserController {
     }
 
     @PutMapping("/v1/users")
-    public ResponseEntity<ResponseDto<UserResponseDto>> updateProfile(
+    public ResponseEntity<ResponseDto<UserResponseDto>> updateUser(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @RequestBody UserRequestDto userRequestDto) {
         log.info(PROFILE_API);
         try {
-            UserResponseDto userResponseDto = userService.updateProfile(userDetails,
+            UserResponseDto userResponseDto = userService.updateUser(userDetails,
                 userRequestDto);
             return ResponseEntity.ok()
                 .body(ResponseDto.<UserResponseDto>builder()
@@ -115,9 +115,9 @@ public class UserController {
     }
 
     @DeleteMapping("/v1/users")
-    public void deleteProfile(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody UserRequestDto userRequestDto) {
+    public void deleteUser(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody UserRequestDto userRequestDto) {
         log.info(PROFILE_API);
-        userService.deleteProfile(userDetails, userRequestDto);
+        userService.deleteUser(userDetails, userRequestDto);
     }
 }
 

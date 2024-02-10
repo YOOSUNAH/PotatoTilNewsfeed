@@ -43,7 +43,7 @@ public class UserService {
         }
     }
 
-    public UserResponseDto getProfile(@AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public UserResponseDto getUser(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         Long userId = userDetails.getUser().getUserId();
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new IllegalArgumentException("선택한 유저가 존재하지 않습니다."));
@@ -51,7 +51,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserResponseDto updateProfile(@AuthenticationPrincipal UserDetailsImpl userDetails,
+    public UserResponseDto updateUser(@AuthenticationPrincipal UserDetailsImpl userDetails,
         UserRequestDto userRequestDto) {
         // 토큰으로 id 가져오기
         Long userId = userDetails.getUser().getUserId();
@@ -88,7 +88,7 @@ public class UserService {
     }
 
     @Transactional
-    public void deleteProfile(UserDetailsImpl userDetails, UserRequestDto userRequestDto) {
+    public void deleteUser(UserDetailsImpl userDetails, UserRequestDto userRequestDto) {
         Long userId = userDetails.getUser().getUserId();
         User user = userRepository.findById(userId)
             .orElseThrow(() -> new IllegalArgumentException("선택한 유저가 존재하지 않습니다."));

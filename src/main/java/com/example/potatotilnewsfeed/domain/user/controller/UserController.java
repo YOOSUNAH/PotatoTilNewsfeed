@@ -94,7 +94,7 @@ public class UserController {
                 .body(ExceptionDto.builder()
                     .statusCode(400)
                     .state(HttpStatus.BAD_REQUEST)
-                    .message("실패")
+                    .message(e.getMessage())
                     .build());
     }
 

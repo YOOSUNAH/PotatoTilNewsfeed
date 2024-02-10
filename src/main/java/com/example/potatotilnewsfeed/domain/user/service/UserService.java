@@ -4,7 +4,6 @@ import com.example.potatotilnewsfeed.domain.user.dto.SignupRequestDto;
 import com.example.potatotilnewsfeed.domain.user.dto.UserRequestDto;
 import com.example.potatotilnewsfeed.domain.user.dto.UserResponseDto;
 import com.example.potatotilnewsfeed.domain.user.entity.User;
-import com.example.potatotilnewsfeed.domain.user.exception.UserNotFoundException;
 import com.example.potatotilnewsfeed.domain.user.repository.UserRepository;
 import com.example.potatotilnewsfeed.global.security.UserDetailsImpl;
 import java.util.Optional;

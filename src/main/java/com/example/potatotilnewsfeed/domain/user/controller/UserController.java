@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -88,8 +89,8 @@ public class UserController {
         userService.deleteUser(userDetails, userRequestDto);
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ExceptionDto> handleException(IllegalArgumentException e){
+    @ExceptionHandler({IllegalArgumentException.class, BadCredentialsException.class})
+    public ResponseEntity<ExceptionDto> handleException(Exception e){
         return ResponseEntity.badRequest()
                 .body(ExceptionDto.builder()
                     .statusCode(400)
@@ -97,6 +98,7 @@ public class UserController {
                     .message(e.getMessage())
                     .build());
     }
+
 
 }
 

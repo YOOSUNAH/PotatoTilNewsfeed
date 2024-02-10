@@ -89,7 +89,7 @@ public class UserController {
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<ExceptionDto> handleUserNotFoundException(IllegalArgumentException e){
+    public ResponseEntity<ExceptionDto> handleException(IllegalArgumentException e){
         return ResponseEntity.badRequest()
                 .body(ExceptionDto.builder()
                     .statusCode(400)

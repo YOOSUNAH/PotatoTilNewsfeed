@@ -7,10 +7,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Table;
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Getter
 @Table(name = "commentLike")
+@Setter
 public class CommentLike { // 댓글 좋아요
 
   @Id

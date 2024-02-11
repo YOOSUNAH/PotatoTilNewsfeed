@@ -1,10 +1,10 @@
 package com.example.potatotilnewsfeed.domain.comments.repository;
 
-import com.example.potatotilnewsfeed.domain.comments.entity.Comment;
+import com.example.potatotilnewsfeed.domain.comments.entity.CommentLike;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CommentRepository extends JpaRepository<Comment, Long> {
+public interface CommentLikeRepository extends JpaRepository<CommentLike, Long> {
 
 }

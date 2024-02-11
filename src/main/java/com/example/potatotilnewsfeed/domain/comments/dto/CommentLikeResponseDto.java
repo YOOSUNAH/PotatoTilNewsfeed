@@ -1,16 +1,14 @@
 package com.example.potatotilnewsfeed.domain.comments.dto;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
-
 @Getter
 @AllArgsConstructor
-public class CommentResponseDto {
+public class CommentLikeResponseDto {
 
-  public String contents;
-  public Long tilId;
-  public Long userId;
-  public Long commentId;
-
+  private Long tilId;
+  private Long userId;
+  private Long commentId;
 }

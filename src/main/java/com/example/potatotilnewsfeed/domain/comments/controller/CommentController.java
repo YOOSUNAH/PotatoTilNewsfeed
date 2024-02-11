@@ -30,15 +30,16 @@ public class CommentController { // 어떤 형태로 값을 주고 받을 것인
   }
 
   @PutMapping("tils/{tilId}/comments/{commentId}")
-  public ResponseEntity<Comment> updateComment(@PathVariable Long tilId, @PathVariable Long commentId) {
+  public ResponseEntity<Comment> updateComment(@PathVariable Long tilId,
+      @PathVariable Long commentId) {
     // 댓글 수정, 응답코드 : 200
-
 
   }
 
 
   @DeleteMapping("/tils/{tilId}/comments/{commentId}")
-  public ResponseEntity<Comment> deleteComment(@PathVariable Long tilId, @PathVariable Long commentId) {
+  public ResponseEntity<Comment> deleteComment(@PathVariable Long tilId,
+      @PathVariable Long commentId) {
 
     // 댓글 삭제, 응답코드 : 204
 

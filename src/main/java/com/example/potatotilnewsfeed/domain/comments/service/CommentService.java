@@ -26,8 +26,6 @@ public class CommentService {
   public Comment updateComment(Comment comment) {
     // 댓글이 존재하면 수정 아니면 (예외)존재하지 않습니다. exist
 
-
-
   }
 
   // 댓글 삭제

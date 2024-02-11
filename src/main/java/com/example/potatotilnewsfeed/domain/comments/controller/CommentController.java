@@ -25,7 +25,7 @@ public class CommentController { // 어떤 형태로 값을 주고 받을 것인
   @PostMapping("/tils/{tilId}/comments")
   public ResponseEntity<Comment> createComment(@PathVariable Long tilId) {
 
-    // 댓글 작성, 응답코드 : 200
+    // 댓글 어떻게 작성, 응답코드 : 200
 
   }
 

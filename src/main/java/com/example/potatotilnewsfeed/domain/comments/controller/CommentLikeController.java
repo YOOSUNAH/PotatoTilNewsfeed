@@ -1,7 +1,5 @@
 package com.example.potatotilnewsfeed.domain.comments.controller;
 
-import com.example.potatotilnewsfeed.domain.comments.dto.CommentLikeResponseDto;
-import com.example.potatotilnewsfeed.domain.comments.dto.CommentResponseDto;
 import com.example.potatotilnewsfeed.domain.comments.entity.CommentLike;
 import com.example.potatotilnewsfeed.domain.comments.service.CommentLikeService;
 import lombok.AllArgsConstructor;

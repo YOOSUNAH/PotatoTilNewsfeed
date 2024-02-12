@@ -17,8 +17,13 @@ public class CommentService {
   // 댓글 작성
   public Comment createComment(Comment comment) {
 // 64글자이면 등록 64글자를 초과하면 등록할 수 없습니다
+    if( <= 64) {
+      return "작성한 댓글이 등록되었습니다.";
+    } else {
+      return "댓글을 등록할 수 없습니다.";
+    }
 
-    commentRepository.save(comment);
+    commentRepository.save(content);
 
   }
 

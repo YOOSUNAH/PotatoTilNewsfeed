@@ -1,5 +1,6 @@
 package com.example.potatotilnewsfeed.domain.comments.entity;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,10 +23,10 @@ public class CommentLike { // 댓글 좋아요
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long commentLikeId;
 
-  @JoinColumn(nullable = false, unique = true)
+  @Column(nullable = false, unique = true)
   private Long userId;
 
-  @JoinColumn(nullable = false, unique = true)
+  @Column(nullable = false, unique = true)
   private Long commentId;
 
 

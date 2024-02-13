@@ -17,12 +17,13 @@ public class CommentLikeController {  // 댓글 좋아요
 
   private final CommentLikeService commentLikeService;
 
+
   @PostMapping("/tils/{tilId}/comments/{commendId}/likes")
   public ResponseEntity<CommentLike> likeCommentRegister(@PathVariable Long tilId,
       @PathVariable Long commendId) {
     // 댓글 좋아요 등록
     // 응답코드 : 201
-
+     return null;
   }
 
   @DeleteMapping("/tils/{tilId}/comments/{commendId}/likes")
@@ -30,7 +31,7 @@ public class CommentLikeController {  // 댓글 좋아요
       @PathVariable Long commendId) {
     // 댓글 좋아요 취소
     // 응답코드 :204
-
+    return null;
   }
 
 

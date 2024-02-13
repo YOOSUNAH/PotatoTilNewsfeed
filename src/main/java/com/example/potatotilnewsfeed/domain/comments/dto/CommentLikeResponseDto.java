@@ -3,9 +3,10 @@ package com.example.potatotilnewsfeed.domain.comments.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
-@AllArgsConstructor
+@Setter
 public class CommentLikeResponseDto {
 
   private Long tilId;

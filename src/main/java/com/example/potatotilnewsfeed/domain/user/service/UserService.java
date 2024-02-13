@@ -1,10 +1,13 @@
 package com.example.potatotilnewsfeed.domain.user.service;
 
 import com.example.potatotilnewsfeed.domain.user.dto.SignupRequestDto;
+import com.example.potatotilnewsfeed.domain.user.entity.Token;
 import com.example.potatotilnewsfeed.domain.user.dto.UserRequestDto;
 import com.example.potatotilnewsfeed.domain.user.dto.UserResponseDto;
 import com.example.potatotilnewsfeed.domain.user.entity.User;
+import com.example.potatotilnewsfeed.domain.user.repository.TokenRepository;
 import com.example.potatotilnewsfeed.domain.user.repository.UserRepository;
+import java.util.NoSuchElementException;
 import com.example.potatotilnewsfeed.global.security.UserDetailsImpl;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
@@ -43,6 +47,12 @@ public class UserService {
         }
     }
 
+    @Transactional
+    public void logout(String accessToken) {
+        Token token = tokenRepository.findById(accessToken).orElseThrow(() ->
+            new NoSuchElementException("로그인되지 않은 토큰입니다."));
+        token.setIsExpired(true);
+    }
     public UserResponseDto getUser(@AuthenticationPrincipal UserDetailsImpl userDetails) {
         Long userId = userDetails.getUser().getUserId();
         User user = userRepository.findById(userId)

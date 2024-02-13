@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -30,6 +32,8 @@ public class UserController {
     private final UserService userService;
     public static final String SIGN_UP_API = "회원 가입 API";
     public static final String SIGN_UP_SUCCESS = "회원 가입 성공";
+    public static final String LOG_OUT_API = "로그아웃 API";
+    public static final String LOG_OUT_SUCCESS = "로그아웃 성공";
 
     @PostMapping("/v1/users/signup")
     public ResponseEntity<ResponseDto<Void>> signup(
@@ -43,6 +47,20 @@ public class UserController {
                 .message(SIGN_UP_SUCCESS)
                 .build());
     }
+
+    @PatchMapping("/v1/users/logout")
+    public ResponseEntity<ResponseDto<Void>> logout(
+        @RequestHeader(value = "Authorization") String accessToken){
+        log.info(LOG_OUT_API);
+
+        userService.logout(accessToken);
+
+        return ResponseEntity.ok()
+            .body(ResponseDto.<Void>builder()
+                .message(LOG_OUT_SUCCESS)
+                .build());
+    }
+
 
 
     @GetMapping("/v1/users")

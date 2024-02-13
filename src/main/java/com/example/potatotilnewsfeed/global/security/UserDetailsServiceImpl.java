@@ -30,7 +30,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Transactional
     public void setLoginUserByToken(String tokenValue) {
-        log.info("토큰추가!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         Token token = new Token(tokenValue, false);
         tokenRepository.save(token);
     }

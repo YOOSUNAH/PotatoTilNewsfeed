@@ -5,7 +5,6 @@ import com.example.potatotilnewsfeed.domain.user.entity.Token;
 import com.example.potatotilnewsfeed.domain.user.entity.User;
 import com.example.potatotilnewsfeed.domain.user.repository.TokenRepository;
 import com.example.potatotilnewsfeed.domain.user.repository.UserRepository;
-import com.example.potatotilnewsfeed.global.jwt.JwtUtil;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;

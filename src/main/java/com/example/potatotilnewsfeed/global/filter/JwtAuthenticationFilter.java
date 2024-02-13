@@ -5,6 +5,7 @@ import com.example.potatotilnewsfeed.domain.user.dto.LoginRequestDto;
 import com.example.potatotilnewsfeed.domain.user.entity.UserRoleEnum;
 import com.example.potatotilnewsfeed.global.jwt.JwtUtil;
 import com.example.potatotilnewsfeed.global.security.UserDetailsImpl;
+import com.example.potatotilnewsfeed.global.security.UserDetailsServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,18 +18,22 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Slf4j(topic = "로그인 및 JWT 생성")
+
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private final JwtUtil jwtUtil;
+    private final UserDetailsServiceImpl userDetailsService;
 
-    public JwtAuthenticationFilter(JwtUtil jwtUtil) {
+    public JwtAuthenticationFilter(JwtUtil jwtUtil, UserDetailsServiceImpl userDetailsService) {
         this.jwtUtil = jwtUtil;
+        this.userDetailsService = userDetailsService;
         setFilterProcessesUrl("/v1/users/login");
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request,
         HttpServletResponse response) throws AuthenticationException {
+        log.info("로그인 시도");
         try {
             LoginRequestDto requestDto = new ObjectMapper().readValue(request.getInputStream(),
                 LoginRequestDto.class);
@@ -53,6 +58,8 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         UserRoleEnum role = ((UserDetailsImpl) authResult.getPrincipal()).getUser().getRole();
 
         String token = jwtUtil.createToken(username, role);
+        userDetailsService.setLoginUserByToken(token);
+
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, token);
     }
 

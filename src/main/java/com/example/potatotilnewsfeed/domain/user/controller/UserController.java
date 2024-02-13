@@ -1,14 +1,25 @@
 package com.example.potatotilnewsfeed.domain.user.controller;
 
 import com.example.potatotilnewsfeed.domain.user.dto.SignupRequestDto;
+import com.example.potatotilnewsfeed.domain.user.dto.UserRequestDto;
+import com.example.potatotilnewsfeed.domain.user.dto.UserResponseDto;
 import com.example.potatotilnewsfeed.domain.user.service.UserService;
+import com.example.potatotilnewsfeed.global.dto.ExceptionDto;
 import com.example.potatotilnewsfeed.global.dto.ResponseDto;
+import com.example.potatotilnewsfeed.global.security.UserDetailsImpl;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
@@ -51,4 +62,61 @@ public class UserController {
     }
 
 
+
+    @GetMapping("/v1/users")
+    public ResponseEntity<ResponseDto<UserResponseDto>> getUser(
+        @AuthenticationPrincipal UserDetailsImpl userDetails) {
+
+            UserResponseDto userResponseDto = userService.getUser(userDetails);
+            return ResponseEntity.ok()
+                .body(ResponseDto.<UserResponseDto>builder()
+                    .message("프로필 조회 성공")
+                    .data(userResponseDto)
+                    .build());
+    }
+
+    @PutMapping("/v1/users")
+    public ResponseEntity<ResponseDto<UserResponseDto>> updateUser(
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
+        @RequestBody UserRequestDto userRequestDto) {
+            UserResponseDto userResponseDto = userService.updateUser(userDetails,
+                userRequestDto);
+            return ResponseEntity.ok()
+                .body(ResponseDto.<UserResponseDto>builder()
+                    .message("프로필 수정 성공")
+                    .data(userResponseDto)
+                    .build());
+    }
+
+    @PutMapping("/v1/users/password")
+    public ResponseEntity<ResponseDto<UserResponseDto>> updatePassword(
+        @AuthenticationPrincipal UserDetailsImpl userDetails,
+        @RequestBody UserRequestDto userRequestDto) {
+
+            UserResponseDto userResponseDto = userService.updatePassword(userDetails,
+                userRequestDto);
+            return ResponseEntity.ok()
+                .body(ResponseDto.<UserResponseDto>builder()
+                    .message("프로필 비밀번호 수정 성공")
+                    .data(userResponseDto)
+                    .build());
+    }
+
+    @DeleteMapping("/v1/users")
+    public void deleteUser(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody UserRequestDto userRequestDto) {
+        userService.deleteUser(userDetails, userRequestDto);
+    }
+
+    @ExceptionHandler({IllegalArgumentException.class, BadCredentialsException.class})
+    public ResponseEntity<ExceptionDto> handleException(Exception e){
+        return ResponseEntity.badRequest()
+                .body(ExceptionDto.builder()
+                    .statusCode(400)
+                    .state(HttpStatus.BAD_REQUEST)
+                    .message(e.getMessage())
+                    .build());
+    }
+
+
 }
+

@@ -16,10 +16,11 @@ public class GetTilResponseDto {
     private LocalDateTime createAt;
     private int likes;
 
-    public GetTilResponseDto(Til til, User user) {
+    public GetTilResponseDto(Til til, User user, int likes) {
         nickname = user.getNickname();
         tilId = til.getId();
         content = til.getContent();
         createAt = til.getCreatedAt();
+        this.likes = likes;
     }
 }

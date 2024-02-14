@@ -72,16 +72,20 @@ public class TilService {
         List<GetTilListResponseDto> getTilListResponseDtoList = new ArrayList<>();
 
         for (User user : userList) {
-            getTilListResponseDtoList.add(getAllBy(user));
+            List<GetTilResponseDto> getTilResponseDtoList = new ArrayList<>();
+            List<Til> tilList = tilRepository.findAllByUser(user);
+            int likes = 0;
+
+            for (Til til : tilList) {
+                likes = getLikes(til);
+
+                getTilResponseDtoList.add(new GetTilResponseDto(til, user, likes));
+            }
+
+            getTilListResponseDtoList.add(new GetTilListResponseDto(getTilResponseDtoList, user));
         }
 
         return getTilListResponseDtoList;
-    }
-
-    private GetTilListResponseDto getAllBy(User user) {
-        return new GetTilListResponseDto(
-            tilRepository.findAllByUser(user).stream().map(til -> new GetTilResponseDto(til, user))
-                .toList(), user);
     }
 
     public GetTilResponseDto getTil(Long tilId) {
@@ -89,21 +93,40 @@ public class TilService {
             () -> new NoSuchElementException(tilId + " ID를 가진 TIL을 찾을 수 없습니다.")
         );
 
-        return new GetTilResponseDto(til, til.getUser());
+        int likes = getLikes(til);
+
+        return new GetTilResponseDto(til, til.getUser(), likes);
     }
 
     public GetTilListResponseDto getTil(User user) {
-        List<GetTilResponseDto> responseDtoList = tilRepository.findAllByUser(user).stream()
-            .map(til -> new GetTilResponseDto(til, user)).toList();
+        List<GetTilResponseDto> responseDtoList = new ArrayList<>();
+        List<Til> tilList = tilRepository.findAllByUser(user);
+        int likes = 0;
+
+        for (Til til : tilList) {
+            likes = getLikes(til);
+
+            responseDtoList.add(new GetTilResponseDto(til, user, likes));
+        }
 
         return new GetTilListResponseDto(responseDtoList, user);
+    }
+
+    private int getLikes(Til til) {
+        List<TilLike> tilLikeList = tilLikeRepository.findAllByTil(til);
+
+        if (tilLikeList != null && !tilLikeList.isEmpty()) {
+            return tilLikeList.size();
+        } else {
+            return 0;
+        }
     }
 
     @Transactional
     public TilLikeResponseDto likeTil(Long tilId, User user) {
         Til til = validateTil(tilId);
-        
-        if(tilLikeRepository.findByTilAndUser(til, user).isPresent()) {
+
+        if (tilLikeRepository.findByTilAndUser(til, user).isPresent()) {
             throw new DuplicateKeyException("이미 좋아요한 TIL 입니다.");
         }
 
@@ -126,8 +149,13 @@ public class TilService {
             til.ifPresent(tilList::add);
         }
 
-        List<GetTilResponseDto> responseDtoList = tilList.stream()
-            .map(til -> new GetTilResponseDto(til, user)).toList();
+        List<GetTilResponseDto> responseDtoList = new ArrayList<>();
+
+        for (Til til : tilList) {
+            int likes = getLikes(til);
+
+            responseDtoList.add(new GetTilResponseDto(til, user, likes));
+        }
 
         return new GetTilListResponseDto(responseDtoList, user);
     }

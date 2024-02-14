@@ -1,5 +1,6 @@
 package com.example.potatotilnewsfeed.domain.user.entity;
 
+import com.example.potatotilnewsfeed.domain.user.dto.UserRequestDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -45,4 +46,20 @@ public class User {
         this.email = email;
         this.role = UserRoleEnum.USER;
     }
+
+
+
+    // 서비스 메서드
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setIntroduce(String introduce) {
+        this.introduce = introduce;
+    }
+
 }

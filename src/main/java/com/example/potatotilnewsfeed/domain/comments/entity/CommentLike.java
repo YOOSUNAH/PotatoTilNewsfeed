@@ -12,12 +12,14 @@ import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Getter
 @Table(name = "commentLike")
 @Setter
+@NoArgsConstructor
 public class CommentLike { // 댓글 좋아요
 
   @Id
@@ -31,10 +33,16 @@ public class CommentLike { // 댓글 좋아요
   private Long commentId;
 
   @ManyToOne
-  @JoinColumn(name = "user_id")
+  @JoinColumn(name = "userid")
   private User user;
 
   @ManyToOne
-  @JoinColumn(name = "comment_Id")
+  @JoinColumn(name = "commentid")
   private Comment comment;
+
+  public CommentLike(Long commentLikeId, Long userId, Long commentId) {
+    this.commentLikeId = commentLikeId;
+    this.userId = userId;
+    this.commentId = commentId;
+  }
 }

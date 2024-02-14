@@ -28,6 +28,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Table(name = "comment")
+@AllArgsConstructor
 @NoArgsConstructor
 public class Comment {  // 댓글..
 
@@ -35,21 +36,30 @@ public class Comment {  // 댓글..
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long commentId;
 
+  @Column(nullable = false, unique = true)
   private Long tilId;
+
+  @Column(nullable = false, unique = true)
   private Long userId;
 
   @Column(nullable = false, length = 64)
   private String content;
 
   @ManyToOne
-  @JoinColumn(name = "user_id")
+  @JoinColumn(name = "userid")
   private User user;
 
   @ManyToOne
-  @JoinColumn(name = "id")
+  @JoinColumn(name = "tilid")
   private Til til;
 
-  @OneToMany(mappedBy = "comment_like_id")
+  @OneToMany(mappedBy = "commentlikeid")
   private List<CommentLike> likeList = new ArrayList<>();
 
+  public Comment(Long tilId, Long commentId, Long userId, String content) {
+    this.commentId = commentId;
+    this.tilId = tilId;
+    this.userId = userId;
+    this.content = content;
+  }
 }

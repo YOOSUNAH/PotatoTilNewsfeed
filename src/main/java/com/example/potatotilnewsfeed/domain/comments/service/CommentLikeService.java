@@ -18,7 +18,7 @@ public class CommentLikeService {
   public CommentLikeResponseDto likeRegisterComment(Long tilId,
       Long commentId,
       CommentRequestDto requestDto) {
-  CommentLike likeList = new CommentLike(tilId, commentId, requestDto.getUserId());
+    CommentLike likeList = new CommentLike(tilId, commentId, requestDto.getUserId());
 //   if(requestDto.getUserId().)
     return null;
   }

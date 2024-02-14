@@ -49,7 +49,7 @@ public class CommentController { // 어떤 형태로 값을 주고 받을 것인
   public ResponseEntity<CommentResponseDto> deleteComment(@PathVariable Long tilId,
       @PathVariable Long commentId, @RequestBody CommentRequestDto requestDto) {
     // 댓글 삭제, 응답코드 : 204
-    CommentResponseDto deleteDto = commentService.deleteComment(tilId, commentId,requestDto);
+    CommentResponseDto deleteDto = commentService.deleteComment(tilId, commentId, requestDto);
     return ResponseEntity.ok().body(deleteDto);
   }
 

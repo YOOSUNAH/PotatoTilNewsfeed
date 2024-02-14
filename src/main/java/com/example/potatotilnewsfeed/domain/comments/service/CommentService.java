@@ -25,7 +25,7 @@ public class CommentService {
     Comment register = new Comment(tilId, requestDto.getCommentId(),
         requestDto.getUserId(),
         requestDto.getContent());
-    if(requestDto.getContent().length() > 64) {
+    if (requestDto.getContent().length() > 64) {
       new IllegalArgumentException("64글자를 초과했습니다.");
     }
     commentRepository.save(register);
@@ -34,23 +34,25 @@ public class CommentService {
   }
 
   // 댓글 수정
-  public CommentResponseDto updateComment(Long tilId, Long commentId, CommentRequestDto requestDto) {
-      Comment update = new Comment(tilId, commentId, requestDto.getUserId(), requestDto.getContent());
-      if(requestDto.getContent().length() > 64) {
-        new IllegalArgumentException("64글자를 초과했습니다.");
-      }
-      commentRepository.save(update);
-      return new CommentResponseDto("댓글이 수정되었습니다.", update.getTilId(),
-          update.getCommentId(), update.getUserId(), update.getContent());
+  public CommentResponseDto updateComment(Long tilId, Long commentId,
+      CommentRequestDto requestDto) {
+    Comment update = new Comment(tilId, commentId, requestDto.getUserId(), requestDto.getContent());
+    if (requestDto.getContent().length() > 64) {
+      new IllegalArgumentException("64글자를 초과했습니다.");
+    }
+    commentRepository.save(update);
+    return new CommentResponseDto("댓글이 수정되었습니다.", update.getTilId(),
+        update.getCommentId(), update.getUserId(), update.getContent());
   }
 
   // 댓글 삭제
-  public CommentResponseDto deleteComment(Long tilId, Long commentId, CommentRequestDto requestDto) {
-      Comment exit = new Comment(tilId, commentId, requestDto.getUserId(), requestDto.getContent());
-      commentRepository.delete(exit);
+  public CommentResponseDto deleteComment(Long tilId, Long commentId,
+      CommentRequestDto requestDto) {
+    Comment exit = new Comment(tilId, commentId, requestDto.getUserId(), requestDto.getContent());
+    commentRepository.delete(exit);
 
-      return new CommentResponseDto("댓글이 삭제되었습니다.", exit.getUserId(), exit.getCommentId(),
-          exit.getTilId(), exit.getContent());
+    return new CommentResponseDto("댓글이 삭제되었습니다.", exit.getUserId(), exit.getCommentId(),
+        exit.getTilId(), exit.getContent());
   }
 
 }

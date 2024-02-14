@@ -16,12 +16,7 @@ public class CommentLikeResponseDto {
   private Long userId;
   private Long commentId;
 
-  public CommentLikeResponseDto(
-      String message,
-      Long tilId,
-      Long userId,
-      Long commentId
-  ) {
+  public CommentLikeResponseDto(String message, Long tilId, Long userId, Long commentId) {
     this.message = message;
     this.tilId = tilId;
     this.userId = userId;

@@ -12,11 +12,11 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CommentResponseDto {
 
- private String message;
- private Long tilId;
- private Long commentId;
- private Long userId;
- private String content;
+  private String message;
+  private Long tilId;
+  private Long commentId;
+  private Long userId;
+  private String content;
 
   public CommentResponseDto(String message, Long tilId,
       Long commentId, Long userId, String content) {

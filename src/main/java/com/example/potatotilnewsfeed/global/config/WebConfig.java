@@ -66,7 +66,6 @@ public class WebConfig {
                 .requestMatchers("/").permitAll()
                 .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .requestMatchers("/v1/users/**").permitAll()
-                .requestMatchers("/v1/users/signup").permitAll()
                 .requestMatchers("/v1/tils/all").permitAll()
                 .anyRequest().authenticated()
         );

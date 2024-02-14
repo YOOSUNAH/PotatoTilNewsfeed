@@ -1,6 +1,7 @@
 package com.example.potatotilnewsfeed.global.jwt;
 
 import com.example.potatotilnewsfeed.domain.user.entity.UserRoleEnum;
+import com.example.potatotilnewsfeed.global.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -23,6 +24,7 @@ import org.springframework.util.StringUtils;
 @Component
 public class JwtUtil {
 
+
     // Header KEY 값
     public static final String AUTHORIZATION_HEADER = "Authorization";
     // 사용자 권한 값의 KEY
@@ -36,6 +38,7 @@ public class JwtUtil {
     private String secretKey;
     private Key key;
     private final SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
+
 
     @PostConstruct
     public void init() {
@@ -59,12 +62,16 @@ public class JwtUtil {
 
     // header 에서 JWT 가져오기
     public String getJwtFromHeader(HttpServletRequest request) {
-        String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
+        return request.getHeader(AUTHORIZATION_HEADER);
+    }
+
+    public String getTokenWithoutBearer(String bearerToken) {
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
             return bearerToken.substring(7);
         }
         return null;
     }
+
 
     // 토큰 검증
     public boolean validateToken(String token) {

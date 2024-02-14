@@ -30,22 +30,22 @@ public class CommentLikeController {  // 댓글 좋아요
   public ResponseEntity<CommentLikeResponseDto> likeRegisterComment(@PathVariable Long tilId,
       @PathVariable Long commentId, @RequestBody CommentRequestDto requestDto) {
     // 댓글 좋아요 등록 , 응답코드 : 201
-    CommentLikeResponseDto likeUpdate = commentLikeService.likeRegisterComment(tilId, commentId,
+    CommentLikeResponseDto updateLike = commentLikeService.likeRegisterComment(tilId, commentId,
         requestDto);
 
-    return ResponseEntity.ok().body(likeUpdate);
+    return ResponseEntity.ok().body(updateLike);
 
 
   }
 
   @DeleteMapping("/tils/{tilId}/comments/{commendId}/likes")
-  public ResponseEntity<CommentLikeResponseDto> likeCommentCancel(@PathVariable Long tilId,
+  public ResponseEntity<CommentLikeResponseDto> likeDeleteComment(@PathVariable Long tilId,
       @PathVariable Long commentId, @RequestBody CommentRequestDto requestDto) {
     // 댓글 좋아요 취소, 응답코드 :204
-    //CommentLikeResponseDto updateDto = commentLikeService.likeDeleteComment(tilId, commentId, requestDto);
+    CommentLikeResponseDto deleteLike = commentLikeService.likeDeleteComment(tilId, commentId,
+        requestDto);
 
-    //return ResponseEntity.ok().body(updateDto);
-    return null;
+    return ResponseEntity.ok().body(deleteLike);
 
   }
 

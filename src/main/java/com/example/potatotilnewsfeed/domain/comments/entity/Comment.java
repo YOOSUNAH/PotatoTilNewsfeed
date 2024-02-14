@@ -28,7 +28,6 @@ import lombok.Setter;
 @Entity
 @Getter
 @Table(name = "comment")
-@AllArgsConstructor
 @NoArgsConstructor
 public class Comment {  // 댓글..
 
@@ -36,10 +35,7 @@ public class Comment {  // 댓글..
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long commentId;
 
-  @Column(nullable = false, unique = true)
   private Long tilId;
-
-  @Column(nullable = false, unique = true)
   private Long userId;
 
   @Column(nullable = false, length = 64)

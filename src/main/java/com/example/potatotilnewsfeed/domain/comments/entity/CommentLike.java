@@ -11,6 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,10 +27,7 @@ public class CommentLike { // 댓글 좋아요
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long commentLikeId;
 
-  @Column(nullable = false, unique = true)
   private Long userId;
-
-  @Column(nullable = false, unique = true)
   private Long commentId;
 
   @ManyToOne

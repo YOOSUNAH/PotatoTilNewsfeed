@@ -1,14 +1,12 @@
 package com.example.potatotilnewsfeed.domain.comments.service;
 
 import com.example.potatotilnewsfeed.domain.comments.dto.CommentLikeResponseDto;
-import com.example.potatotilnewsfeed.domain.comments.dto.CommentRequestDto;
 import com.example.potatotilnewsfeed.domain.comments.entity.Comment;
 import com.example.potatotilnewsfeed.domain.comments.entity.CommentLike;
 import com.example.potatotilnewsfeed.domain.comments.repository.CommentLikeRepository;
 import com.example.potatotilnewsfeed.domain.comments.repository.CommentRepository;
-import com.example.potatotilnewsfeed.domain.til.entity.Til;
-import com.example.potatotilnewsfeed.domain.til.repository.TilRepository;
-import com.example.potatotilnewsfeed.domain.til.service.TilService;
+import com.example.potatotilnewsfeed.domain.user.entity.User;
+import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

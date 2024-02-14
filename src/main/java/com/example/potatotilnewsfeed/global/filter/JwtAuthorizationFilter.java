@@ -41,26 +41,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
         String bearerToken = jwtUtil.getJwtFromHeader(req);
 
-        try {
-            userDetailsService.validateToken(bearerToken);
-        } catch (LoginException e) {
-            log.error(e.getMessage());
-
-            res.setStatus(400);
-            res.setContentType("application/json");
-            res.setCharacterEncoding("utf-8");
-
-            ExceptionDto exceptionDto = ExceptionDto.builder()
-                .statusCode(HttpStatus.BAD_REQUEST.value())
-                .state(HttpStatus.BAD_REQUEST)
-                .message("이미 로그아웃 처리된 토큰입니다. 다시 로그인하세요.")
-                .build();
-
-            String exception = objectMapper.writeValueAsString(exceptionDto);
-            res.getWriter().write(exception);
-            return;
-        }
-
 
         String tokenValue = jwtUtil.getTokenWithoutBearer(bearerToken);
 
@@ -70,6 +50,27 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                 log.error("Token Error");
                 return;
             }
+
+            try {
+                userDetailsService.validateToken(bearerToken);
+            } catch (LoginException e) {
+                log.error(e.getMessage());
+
+                res.setStatus(400);
+                res.setContentType("application/json");
+                res.setCharacterEncoding("utf-8");
+
+                ExceptionDto exceptionDto = ExceptionDto.builder()
+                    .statusCode(HttpStatus.BAD_REQUEST.value())
+                    .state(HttpStatus.BAD_REQUEST)
+                    .message("이미 로그아웃 처리된 토큰입니다. 다시 로그인하세요.")
+                    .build();
+
+                String exception = objectMapper.writeValueAsString(exceptionDto);
+                res.getWriter().write(exception);
+                return;
+            }
+
 
             Claims info = jwtUtil.getUserInfoFromToken(tokenValue);
 

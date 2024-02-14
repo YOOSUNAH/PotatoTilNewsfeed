@@ -12,4 +12,6 @@ public interface TilLikeRepository extends JpaRepository<TilLike, Long> {
     Optional<List<TilLike>> findAllByUser(User user);
 
     Optional<TilLike> findByTilAndUser(Til til, User user);
+
+    List<TilLike> findAllByTil(Til til);
 }

@@ -28,10 +28,9 @@ public class CommentController { // 어떤 형태로 값을 주고 받을 것인
 
   @PostMapping("/tils/{tilId}/comments")
   public ResponseEntity<CommentResponseDto> createComment(@PathVariable Long tilId,
-       @RequestBody CommentRequestDto requestDto) {
-    // 댓글 어떻게 작성, 응답코드 : 200
-    CommentResponseDto createDto = commentService.createComment("댓글이 등록되었습니다.",
-        tilId, requestDto.getCommentId(), requestDto.getUserId(), requestDto.getContent());
+      @RequestBody CommentRequestDto requestDto) {
+    // 댓글 작성, 응답코드 : 200
+    CommentResponseDto createDto = commentService.createComment(tilId, requestDto);
 
     return ResponseEntity.ok().body(createDto);
   }
@@ -39,21 +38,19 @@ public class CommentController { // 어떤 형태로 값을 주고 받을 것인
   @PutMapping("/tils/{tilId}/comments/{commentId}")
   public ResponseEntity<CommentResponseDto> updateComment(@PathVariable Long tilId,
       @PathVariable Long commentId, @RequestBody CommentRequestDto requestDto) {
-    CommentResponseDto updateDto = commentService.updateComment("댓글이 수정되었습니다.",
-        tilId, commentId, requestDto.getUserId(), requestDto.getContent());
-
     // 댓글 수정, 응답코드 : 200
+    CommentResponseDto updateDto = commentService.updateComment(tilId, commentId, requestDto);
+
     return ResponseEntity.ok().body(updateDto);
 
   }
 
-
   @DeleteMapping("/tils/{tilId}/comments/{commentId}")
   public ResponseEntity<CommentResponseDto> deleteComment(@PathVariable Long tilId,
-      @PathVariable Long commentId) {
-
+      @PathVariable Long commentId, @RequestBody CommentRequestDto requestDto) {
     // 댓글 삭제, 응답코드 : 204
-return null;
+    CommentResponseDto deleteDto = commentService.deleteComment(tilId, commentId,requestDto);
+    return ResponseEntity.ok().body(deleteDto);
   }
 
 }

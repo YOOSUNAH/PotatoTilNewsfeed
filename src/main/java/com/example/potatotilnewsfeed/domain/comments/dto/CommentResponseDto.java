@@ -18,7 +18,8 @@ public class CommentResponseDto {
  private Long userId;
  private String content;
 
-  public CommentResponseDto(String message, Long tilId, Long commentId, Long userId, String content) {
+  public CommentResponseDto(String message, Long tilId,
+      Long commentId, Long userId, String content) {
     this.message = message;
     this.commentId = commentId;
     this.userId = userId;

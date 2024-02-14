@@ -14,6 +14,7 @@ import com.example.potatotilnewsfeed.global.dto.ResponseDto;
 import com.example.potatotilnewsfeed.global.security.UserDetailsImpl;
 import jakarta.servlet.http.HttpServletResponse;
 import java.net.URI;
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.extern.slf4j.Slf4j;
@@ -45,7 +46,7 @@ public class TilController {
     }
 
     @PostMapping("/v1/tils/all")
-    public ResponseEntity<ResponseDto<TilData>> createTil(@RequestBody TilDto tilDto,
+    public ResponseEntity<ResponseDto<List<TilData>>> createTil(@RequestBody TilDto tilDto,
         HttpServletResponse response) {
         log.info("TIL 생성 API");
 
@@ -57,16 +58,18 @@ public class TilController {
         TilData tilData = new TilData(createdTil.getId(), createdTil.getTitle(),
             createdTil.getContent(), createdTil.getUser().getNickname(), createdTil.getCreatedAt());
 
+        List<TilData> tilDataList = Arrays.asList(tilData);
+
         return ResponseEntity.created(location).body(
-            ResponseDto.<TilData>builder()
+            ResponseDto.<List<TilData>>builder()
                 .message("TIL이 등록되었습니다.")
-                .data(tilData)
+                .data(tilDataList)
                 .build()
         );
     }
 
     @PatchMapping("/v1/tils/{tilId}")
-    public ResponseEntity<ResponseDto<TilData>> patchTil(@PathVariable("tilId") Long tilId,
+    public ResponseEntity<ResponseDto<List<TilData>>> patchTil(@PathVariable("tilId") Long tilId,
         @RequestBody TilUpdateRequestDto requestDto) {
         log.info("TIL 수정 API");
 
@@ -74,10 +77,12 @@ public class TilController {
         TilData tilData = new TilData(updatedTil.getId(), updatedTil.getTitle(),
             updatedTil.getContent(), updatedTil.getUser().getNickname(), updatedTil.getCreatedAt());
 
+        List<TilData> tilDataList = Arrays.asList(tilData);
+
         return ResponseEntity.ok().body(
-            ResponseDto.<TilData>builder()
+            ResponseDto.<List<TilData>>builder()
                 .message("TIL이 수정되었습니다.")
-                .data(tilData)
+                .data(tilDataList)
                 .build()
         );
     }

@@ -6,8 +6,10 @@ import com.example.potatotilnewsfeed.domain.comments.entity.Comment;
 import com.example.potatotilnewsfeed.domain.comments.service.CommentService;
 import com.example.potatotilnewsfeed.domain.til.service.TilService;
 import com.example.potatotilnewsfeed.domain.user.service.UserService;
+import com.example.potatotilnewsfeed.global.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,18 +30,22 @@ public class CommentController { // 어떤 형태로 값을 주고 받을 것인
 
   @PostMapping("/tils/{tilId}/comments")
   public ResponseEntity<CommentResponseDto> createComment(@PathVariable Long tilId,
-      @RequestBody CommentRequestDto requestDto) {
+      @RequestBody CommentRequestDto requestDto,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
     // 댓글 작성, 응답코드 : 200
-    CommentResponseDto createDto = commentService.createComment(tilId, requestDto);
+    CommentResponseDto createDto = commentService.createComment(tilId, requestDto,
+        userDetails.getUser());
 
     return ResponseEntity.ok().body(createDto);
   }
 
   @PutMapping("/tils/{tilId}/comments/{commentId}")
   public ResponseEntity<CommentResponseDto> updateComment(@PathVariable Long tilId,
-      @PathVariable Long commentId, @RequestBody CommentRequestDto requestDto) {
+      @PathVariable Long commentId, @RequestBody CommentRequestDto requestDto,
+      @AuthenticationPrincipal UserDetailsImpl userDetails) {
     // 댓글 수정, 응답코드 : 200
-    CommentResponseDto updateDto = commentService.updateComment(tilId, commentId, requestDto);
+    CommentResponseDto updateDto = commentService.updateComment(tilId, commentId, requestDto,
+        userDetails.getUser());
 
     return ResponseEntity.ok().body(updateDto);
 

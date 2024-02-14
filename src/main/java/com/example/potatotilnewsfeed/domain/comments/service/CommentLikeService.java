@@ -35,17 +35,20 @@ public class CommentLikeService {
     commentLikeRepository.save(commentLike);
 
     return new CommentLikeResponseDto("선택하신 댓글에 좋아요가 등록되었습니다.", tilId, commentId,
-        requestDto.getUserId());
+        user.getUserId());
   }
 
   // 댓글 좋아요 삭제
-  public CommentLikeResponseDto likeDeleteComment(Long tilId, Long commentId,
-      CommentRequestDto requestDto) {
-    CommentLike likeDelete = new CommentLike(tilId, commentId, requestDto.getUserId());
-    commentLikeRepository.delete(likeDelete);
+  public void likeDeleteComment(Long tilId, Long commentId, User user) {
+    Comment comment = commentRepository.findById(commentId).orElseThrow(
+        () -> new NoSuchElementException("해당 Comment를 찾을 수 없습니다.")
+    );
 
-    return new CommentLikeResponseDto("선택하신 댓글에 좋아요가 삭제되었습니다.", tilId, commentId,
-        requestDto.getUserId());
+    CommentLike commentLike = commentLikeRepository.findByUserAndComment(user, comment).orElseThrow(
+        () -> new NoSuchElementException("해당 댓글에 좋아요를 하지 않았습니다.")
+    );
+
+    commentLikeRepository.deleteById(commentLike.getCommentLikeId());
   }
 
 }

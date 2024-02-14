@@ -1,7 +1,9 @@
 package com.example.potatotilnewsfeed.global.filter;
 
+import com.example.potatotilnewsfeed.global.dto.ExceptionDto;
 import com.example.potatotilnewsfeed.global.jwt.JwtUtil;
 import com.example.potatotilnewsfeed.global.security.UserDetailsServiceImpl;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -10,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import javax.security.auth.login.LoginException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -25,6 +28,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
     private final UserDetailsServiceImpl userDetailsService;
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     public JwtAuthorizationFilter(JwtUtil jwtUtil, UserDetailsServiceImpl userDetailsService) {
         this.jwtUtil = jwtUtil;
@@ -41,7 +45,19 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             userDetailsService.validateToken(bearerToken);
         } catch (LoginException e) {
             log.error(e.getMessage());
+
             res.setStatus(400);
+            res.setContentType("application/json");
+            res.setCharacterEncoding("utf-8");
+
+            ExceptionDto exceptionDto = ExceptionDto.builder()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .state(HttpStatus.BAD_REQUEST)
+                .message("이미 로그아웃 처리된 토큰입니다. 다시 로그인하세요.")
+                .build();
+
+            String exception = objectMapper.writeValueAsString(exceptionDto);
+            res.getWriter().write(exception);
             return;
         }
 

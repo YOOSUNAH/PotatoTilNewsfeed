@@ -46,11 +46,12 @@ public class CommentController { // 어떤 형태로 값을 주고 받을 것인
   }
 
   @DeleteMapping("/tils/{tilId}/comments/{commentId}")
-  public ResponseEntity<CommentResponseDto> deleteComment(@PathVariable Long tilId,
-      @PathVariable Long commentId, @RequestBody CommentRequestDto requestDto) {
+  public ResponseEntity<Void> deleteComment(@PathVariable Long tilId,
+      @PathVariable Long commentId) {
     // 댓글 삭제, 응답코드 : 204
-    CommentResponseDto deleteDto = commentService.deleteComment(tilId, commentId, requestDto);
-    return ResponseEntity.ok().body(deleteDto);
+    commentService.deleteComment(tilId, commentId);
+
+    return ResponseEntity.noContent().build();
   }
 
 }

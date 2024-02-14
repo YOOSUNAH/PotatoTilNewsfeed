@@ -4,6 +4,9 @@ import com.example.potatotilnewsfeed.domain.comments.dto.CommentRequestDto;
 import com.example.potatotilnewsfeed.domain.comments.dto.CommentResponseDto;
 import com.example.potatotilnewsfeed.domain.comments.entity.Comment;
 import com.example.potatotilnewsfeed.domain.comments.repository.CommentRepository;
+import com.example.potatotilnewsfeed.domain.til.entity.Til;
+import com.example.potatotilnewsfeed.domain.til.repository.TilRepository;
+import com.example.potatotilnewsfeed.domain.user.entity.User;
 import com.example.potatotilnewsfeed.domain.user.service.UserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -18,41 +21,50 @@ import org.springframework.transaction.annotation.Transactional;
 public class CommentService {
 
   private final CommentRepository commentRepository;
+  private final TilRepository tilRepository;
 
 
   // 댓글 작성
-  public CommentResponseDto createComment(Long tilId, CommentRequestDto requestDto) {
-    Comment register = new Comment(tilId, requestDto.getCommentId(),
-        requestDto.getUserId(),
-        requestDto.getContent());
+  public CommentResponseDto createComment(Long tilId, CommentRequestDto requestDto, User user) {
+    Til til = tilRepository.findById(tilId).orElseThrow(
+        () -> new NoSuchElementException("해당 TIL을 찾을 수 없습니다.")
+    );
+
+    Comment register = new Comment(til, user, requestDto.getContent());
     if (requestDto.getContent().length() > 64) {
       new IllegalArgumentException("64글자를 초과했습니다.");
     }
+
     commentRepository.save(register);
-    return new CommentResponseDto("댓글이 등록되었습니다.", register.getTilId(), register.getCommentId(),
-        register.getUserId(), register.getContent());
+    return new CommentResponseDto("댓글이 등록되었습니다.", register.getTil().getId(),
+        register.getCommentId(),
+        register.getUser().getUserId(), register.getContent());
   }
 
   // 댓글 수정
   public CommentResponseDto updateComment(Long tilId, Long commentId,
-      CommentRequestDto requestDto) {
-    Comment update = new Comment(tilId, commentId, requestDto.getUserId(), requestDto.getContent());
-    if (requestDto.getContent().length() > 64) {
-      new IllegalArgumentException("64글자를 초과했습니다.");
+      CommentRequestDto requestDto, User user) {
+    Comment comment = commentRepository.findById(commentId).orElseThrow(
+        () -> new NoSuchElementException("해당 commentId를 찾을 수 없습니다.")
+    );
+
+    if (!comment.getTil().getId().equals(tilId)) {
+      throw new IllegalArgumentException("TIL 정보가 일치하지 않습니다.");
     }
-    commentRepository.save(update);
-    return new CommentResponseDto("댓글이 수정되었습니다.", update.getTilId(),
-        update.getCommentId(), update.getUserId(), update.getContent());
+
+    if (requestDto.getContent().length() > 64) {
+      throw new IllegalArgumentException("64글자를 초과했습니다.");
+    }
+
+    comment.setContent(requestDto.getContent());
+
+    return new CommentResponseDto("댓글이 수정되었습니다.", tilId,
+        commentId, user.getUserId(), comment.getContent());
   }
 
   // 댓글 삭제
-  public CommentResponseDto deleteComment(Long tilId, Long commentId,
-      CommentRequestDto requestDto) {
-    Comment exit = new Comment(tilId, commentId, requestDto.getUserId(), requestDto.getContent());
-    commentRepository.delete(exit);
-
-    return new CommentResponseDto("댓글이 삭제되었습니다.", exit.getUserId(), exit.getCommentId(),
-        exit.getTilId(), exit.getContent());
+  public void deleteComment(Long tilId, Long commentId) {
+    commentRepository.deleteById(commentId);
   }
 
 }

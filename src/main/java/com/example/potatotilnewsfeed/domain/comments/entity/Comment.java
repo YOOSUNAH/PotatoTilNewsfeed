@@ -35,27 +35,20 @@ public class Comment {  // 댓글..
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long commentId;
 
-  private Long tilId;
-  private Long userId;
-
   @Column(nullable = false, length = 64)
   private String content;
 
   @ManyToOne
-  @JoinColumn(name = "userid")
+  @JoinColumn(name = "user_id")
   private User user;
 
   @ManyToOne
-  @JoinColumn(name = "tilid")
+  @JoinColumn(name = "til_id")
   private Til til;
 
-  @OneToMany(mappedBy = "commentlikeid")
-  private List<CommentLike> likeList = new ArrayList<>();
-
-  public Comment(Long tilId, Long commentId, Long userId, String content) {
-    this.commentId = commentId;
-    this.tilId = tilId;
-    this.userId = userId;
+  public Comment(Til til, User user, String content) {
+    this.til = til;
+    this.user = user;
     this.content = content;
   }
 }

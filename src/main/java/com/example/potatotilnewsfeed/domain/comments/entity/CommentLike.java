@@ -27,20 +27,16 @@ public class CommentLike { // 댓글 좋아요
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long commentLikeId;
 
-  private Long userId;
-  private Long commentId;
-
   @ManyToOne
-  @JoinColumn(name = "userid")
+  @JoinColumn(name = "user_id")
   private User user;
 
   @ManyToOne
-  @JoinColumn(name = "commentid")
+  @JoinColumn(name = "comment_id")
   private Comment comment;
 
-  public CommentLike(Long commentLikeId, Long userId, Long commentId) {
-    this.commentLikeId = commentLikeId;
-    this.userId = userId;
-    this.commentId = commentId;
+  public CommentLike(User user, Comment comment) {
+    this.user = user;
+    this.comment = comment;
   }
 }

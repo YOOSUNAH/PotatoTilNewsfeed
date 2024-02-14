@@ -4,51 +4,56 @@ import com.example.potatotilnewsfeed.domain.comments.dto.CommentRequestDto;
 import com.example.potatotilnewsfeed.domain.comments.dto.CommentResponseDto;
 import com.example.potatotilnewsfeed.domain.comments.entity.Comment;
 import com.example.potatotilnewsfeed.domain.comments.service.CommentService;
-import com.example.potatotilnewsfeed.domain.user.entity.User;
-import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
+import com.example.potatotilnewsfeed.domain.til.service.TilService;
+import com.example.potatotilnewsfeed.domain.user.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/v1/tils")
-@AllArgsConstructor
+@RequestMapping("/v1")
+@RequiredArgsConstructor
 public class CommentController { // 어떤 형태로 값을 주고 받을 것인가? json(숫자, 문자)
 
   private final CommentService commentService;
+  private final TilService tilService;
 
-  @PostMapping("/{tilId}/comments")
-  public ResponseEntity<CommentResponseDto> createComment(@PathVariable Long tilId, @RequestBody
-      CommentRequestDto requestDto) {
+
+  @PostMapping("/tils/{tilId}/comments")
+  public ResponseEntity<CommentResponseDto> createComment(@PathVariable Long tilId,
+       @RequestBody CommentRequestDto requestDto) {
     // 댓글 어떻게 작성, 응답코드 : 200
-    commentService.createComment(tilId, requestDto);
+    CommentResponseDto createDto = commentService.createComment("댓글이 등록되었습니다.",
+        tilId, requestDto.getCommentId(), requestDto.getUserId(), requestDto.getContent());
 
-    return null;
+    return ResponseEntity.ok().body(createDto);
   }
-//...
-  @PutMapping("tils/{tilId}/comments/{commentId}")
-  public void updateComment(@PathVariable Long tilId,
-      @RequestParam Long commentId, @ModelAttribute Comment comment) {
+
+  @PutMapping("/tils/{tilId}/comments/{commentId}")
+  public ResponseEntity<CommentResponseDto> updateComment(@PathVariable Long tilId,
+      @PathVariable Long commentId, @RequestBody CommentRequestDto requestDto) {
+    CommentResponseDto updateDto = commentService.updateComment("댓글이 수정되었습니다.",
+        tilId, commentId, requestDto.getUserId(), requestDto.getContent());
+
     // 댓글 수정, 응답코드 : 200
+    return ResponseEntity.ok().body(updateDto);
 
   }
-//
+
 
   @DeleteMapping("/tils/{tilId}/comments/{commentId}")
-  public void deleteComment(@PathVariable Long tilId,
-      @RequestParam Long commentId) {
-    // 댓글 삭제, 응답코드 : 204
+  public ResponseEntity<CommentResponseDto> deleteComment(@PathVariable Long tilId,
+      @PathVariable Long commentId) {
 
+    // 댓글 삭제, 응답코드 : 204
+return null;
   }
 
 }

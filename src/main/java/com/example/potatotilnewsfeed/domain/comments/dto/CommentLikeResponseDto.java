@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 public class CommentLikeResponseDto {
 
+  private String message;
   private Long tilId;
   private Long userId;
   private Long commentId;

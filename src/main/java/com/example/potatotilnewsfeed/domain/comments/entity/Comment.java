@@ -2,6 +2,7 @@ package com.example.potatotilnewsfeed.domain.comments.entity;
 
 import com.example.potatotilnewsfeed.domain.comments.dto.CommentLikeResponseDto;
 import com.example.potatotilnewsfeed.domain.comments.dto.CommentRequestDto;
+import com.example.potatotilnewsfeed.domain.til.entity.Til;
 import com.example.potatotilnewsfeed.domain.user.entity.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -27,6 +28,7 @@ import lombok.Setter;
 @Entity
 @Getter
 @Table(name = "comment")
+@NoArgsConstructor
 public class Comment {  // 댓글..
 
   @Id
@@ -39,5 +41,15 @@ public class Comment {  // 댓글..
   @Column(nullable = false, length = 64)
   private String content;
 
+  @ManyToOne
+  @JoinColumn(name = "user_id")
+  private User user;
+
+  @ManyToOne
+  @JoinColumn(name = "id")
+  private Til til;
+
+  @OneToMany(mappedBy = "comment_like_id")
+  private List<CommentLike> likeList = new ArrayList<>();
 
 }

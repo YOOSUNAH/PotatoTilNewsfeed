@@ -2,43 +2,38 @@ package com.example.potatotilnewsfeed.domain.comments.service;
 
 import com.example.potatotilnewsfeed.domain.comments.dto.CommentRequestDto;
 import com.example.potatotilnewsfeed.domain.comments.dto.CommentResponseDto;
-import com.example.potatotilnewsfeed.domain.comments.entity.Comment;
 import com.example.potatotilnewsfeed.domain.comments.repository.CommentRepository;
-import com.example.potatotilnewsfeed.domain.til.repository.TilRepository;
-import com.example.potatotilnewsfeed.domain.user.entity.User;
-import com.example.potatotilnewsfeed.domain.user.repository.UserRepository;
+import com.example.potatotilnewsfeed.domain.user.service.UserService;
 import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CommentService {
-  // 사용자에게 어떤 공통적인(?) 기능을 제공할 것인가?(비즈니스 로직)
 
   private final CommentRepository commentRepository;
-  private final UserRepository userRepository;
-  private final TilRepository tilRepository;
-
-
+  private final UserService userService;
 
   // 댓글 작성
-  public Comment createComment(Long commentId, CommentRequestDto commentRequestDto) {
+  public CommentResponseDto createComment(String message, Long tilId, Long commentId, Long userId, String content) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-
-    return null;
+    CommentResponseDto register = new CommentResponseDto(message, tilId, commentId, userId, content);
+    return register;
   }
 
   // 댓글 수정
-  public Comment updateComment(CommentResponseDto commentRequestDto, Long commentId) {
+  public CommentResponseDto updateComment(String message, Long tilId, Long commentId, Long userId, String content) {
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
+    CommentResponseDto changeComment = new CommentResponseDto(message, tilId, commentId, userId, content);
 
-    return null;
+    return changeComment;
   }
 
   // 댓글 삭제

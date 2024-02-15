@@ -34,8 +34,8 @@ public class CommentLikeService {
     CommentLike commentLike = new CommentLike(user, comment);
     commentLikeRepository.save(commentLike);
 
-    return new CommentLikeResponseDto("선택하신 댓글에 좋아요가 등록되었습니다.", tilId, commentId,
-        user.getUserId());
+    return new CommentLikeResponseDto("선택하신 댓글에 좋아요가 등록되었습니다.", tilId, user.getUserId(),
+        commentId);
   }
 
   // 댓글 좋아요 삭제

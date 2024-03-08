@@ -1,6 +1,6 @@
 package com.example.potatotilnewsfeed.global.filter;
 
-import com.example.potatotilnewsfeed.global.dto.ExceptionDto;
+import com.example.potatotilnewsfeed.global.dto.Exception.ExceptionDto;
 import com.example.potatotilnewsfeed.global.jwt.JwtUtil;
 import com.example.potatotilnewsfeed.global.security.UserDetailsServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,9 +19,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.web.util.ContentCachingResponseWrapper;
 
 @Slf4j(topic = "JWT 검증 및 인가")
 public class JwtAuthorizationFilter extends OncePerRequestFilter {

@@ -7,12 +7,8 @@ import com.example.potatotilnewsfeed.domain.comments.repository.CommentRepositor
 import com.example.potatotilnewsfeed.domain.til.entity.Til;
 import com.example.potatotilnewsfeed.domain.til.repository.TilRepository;
 import com.example.potatotilnewsfeed.domain.user.entity.User;
-import com.example.potatotilnewsfeed.domain.user.service.UserService;
-import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

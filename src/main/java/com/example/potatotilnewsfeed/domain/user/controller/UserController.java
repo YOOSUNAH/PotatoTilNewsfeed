@@ -3,7 +3,7 @@ package com.example.potatotilnewsfeed.domain.user.controller;
 import com.example.potatotilnewsfeed.domain.user.dto.SignupRequestDto;
 import com.example.potatotilnewsfeed.domain.user.dto.UserRequestDto;
 import com.example.potatotilnewsfeed.domain.user.dto.UserResponseDto;
-import com.example.potatotilnewsfeed.domain.user.service.UserService;
+import com.example.potatotilnewsfeed.domain.user.service.UserServiceImpl;
 import com.example.potatotilnewsfeed.global.dto.ResponseDto;
 import com.example.potatotilnewsfeed.global.security.UserDetailsImpl;
 import jakarta.validation.Valid;
@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
     public static final String SIGN_UP_API = "회원 가입 API";
     public static final String SIGN_UP_SUCCESS = "회원 가입 성공";
     public static final String LOG_OUT_API = "로그아웃 API";
@@ -36,7 +36,7 @@ public class UserController {
         @RequestBody @Valid SignupRequestDto requestDto) {
         log.info(SIGN_UP_API);
 
-        userService.signup(requestDto);
+        userServiceImpl.signup(requestDto);
 
         return ResponseEntity.ok()
             .body(ResponseDto.<Void>builder()
@@ -49,7 +49,7 @@ public class UserController {
         @RequestHeader(value = "Authorization") String accessToken){
         log.info(LOG_OUT_API);
 
-        userService.logout(accessToken);
+        userServiceImpl.logout(accessToken);
 
         return ResponseEntity.ok()
             .body(ResponseDto.<Void>builder()
@@ -63,7 +63,7 @@ public class UserController {
     public ResponseEntity<ResponseDto<UserResponseDto>> getUser(
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
 
-            UserResponseDto userResponseDto = userService.getUser(userDetails);
+            UserResponseDto userResponseDto = userServiceImpl.getUser(userDetails);
             return ResponseEntity.ok()
                 .body(ResponseDto.<UserResponseDto>builder()
                     .message("프로필 조회 성공")
@@ -75,7 +75,7 @@ public class UserController {
     public ResponseEntity<ResponseDto<UserResponseDto>> updateUser(
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @RequestBody UserRequestDto userRequestDto) {
-            UserResponseDto userResponseDto = userService.updateUser(userDetails,
+            UserResponseDto userResponseDto = userServiceImpl.updateUser(userDetails,
                 userRequestDto);
             return ResponseEntity.ok()
                 .body(ResponseDto.<UserResponseDto>builder()
@@ -89,7 +89,7 @@ public class UserController {
         @AuthenticationPrincipal UserDetailsImpl userDetails,
         @RequestBody UserRequestDto userRequestDto) {
 
-            UserResponseDto userResponseDto = userService.updatePassword(userDetails,
+            UserResponseDto userResponseDto = userServiceImpl.updatePassword(userDetails,
                 userRequestDto);
             return ResponseEntity.ok()
                 .body(ResponseDto.<UserResponseDto>builder()
@@ -100,7 +100,7 @@ public class UserController {
 
     @DeleteMapping("/v1/users")
     public void deleteUser(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody UserRequestDto userRequestDto) {
-        userService.deleteUser(userDetails, userRequestDto);
+        userServiceImpl.deleteUser(userDetails, userRequestDto);
     }
 
 }

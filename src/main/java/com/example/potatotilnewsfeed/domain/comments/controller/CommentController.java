@@ -2,10 +2,8 @@ package com.example.potatotilnewsfeed.domain.comments.controller;
 
 import com.example.potatotilnewsfeed.domain.comments.dto.CommentRequestDto;
 import com.example.potatotilnewsfeed.domain.comments.dto.CommentResponseDto;
-import com.example.potatotilnewsfeed.domain.comments.entity.Comment;
 import com.example.potatotilnewsfeed.domain.comments.service.CommentService;
 import com.example.potatotilnewsfeed.domain.til.service.TilService;
-import com.example.potatotilnewsfeed.domain.user.service.UserService;
 import com.example.potatotilnewsfeed.global.security.UserDetailsImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController

@@ -1,20 +1,21 @@
 package com.example.potatotilnewsfeed.domain.user.service;
 
 import com.example.potatotilnewsfeed.domain.user.dto.SignupRequestDto;
-import com.example.potatotilnewsfeed.domain.user.entity.Token;
 import com.example.potatotilnewsfeed.domain.user.dto.UserRequestDto;
 import com.example.potatotilnewsfeed.domain.user.dto.UserResponseDto;
+import com.example.potatotilnewsfeed.domain.user.entity.Token;
 import com.example.potatotilnewsfeed.domain.user.entity.User;
 import com.example.potatotilnewsfeed.domain.user.repository.TokenRepository;
 import com.example.potatotilnewsfeed.domain.user.repository.UserRepository;
-import com.example.potatotilnewsfeed.global.dto.Exception.NotFoundException;
-import com.example.potatotilnewsfeed.global.dto.Exception.DuplicatePasswordException;
+import com.example.potatotilnewsfeed.global.exception.DuplicatePasswordException;
+import com.example.potatotilnewsfeed.global.exception.NotFoundException;
 import com.example.potatotilnewsfeed.global.security.UserDetailsImpl;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DuplicateKeyException;
+
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;

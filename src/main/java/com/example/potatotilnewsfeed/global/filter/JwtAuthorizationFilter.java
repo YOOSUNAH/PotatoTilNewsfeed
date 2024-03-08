@@ -1,6 +1,6 @@
 package com.example.potatotilnewsfeed.global.filter;
 
-import com.example.potatotilnewsfeed.global.dto.Exception.ExceptionDto;
+import com.example.potatotilnewsfeed.global.exception.ExceptionDto;
 import com.example.potatotilnewsfeed.global.jwt.JwtUtil;
 import com.example.potatotilnewsfeed.global.security.UserDetailsServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;

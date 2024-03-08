@@ -1,6 +1,7 @@
 package com.example.potatotilnewsfeed.global;
 
-import com.example.potatotilnewsfeed.global.dto.Exception.ExceptionDto;
+
+import com.example.potatotilnewsfeed.global.exception.ExceptionDto;
 import java.util.NoSuchElementException;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;

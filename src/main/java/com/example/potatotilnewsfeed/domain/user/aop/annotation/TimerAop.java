@@ -10,12 +10,15 @@ import org.springframework.util.StopWatch;
 @Aspect
 @Component
 public class TimerAop {
+
     @Pointcut("execution(* com.example.potatotilnewsfeed.domain.user.aop.controller..*.*(..))")
-    private void cut() {}
+    private void cut() {
+    }
 
     //사용자 지정 어노테이션이 붙은 메서드에도 적용!
     @Pointcut("execution(* com.example.potatotilnewsfeed.domain.user.aop.controller..*.*(..))")
-    private void enableTimer() {}
+    private void enableTimer() {
+    }
 
     //메서드 전 후로 시간 측정 시작하고 멈추려면 Before, AfterReturning으로는 시간을 공유 할 수가 없음 Around 사용!
     @Around("cut() && enableTimer()")

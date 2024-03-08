@@ -1,4 +1,4 @@
-package com.example.potatotilnewsfeed.domain.user.controller;
+package com.example.potatotilnewsfeed.domain.user.aop.controller;
 
 import com.example.potatotilnewsfeed.domain.user.dto.CheckEmailRequestDto;
 import com.example.potatotilnewsfeed.domain.user.dto.CheckEmailResponseDto;

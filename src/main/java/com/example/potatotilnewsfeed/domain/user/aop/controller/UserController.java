@@ -1,4 +1,4 @@
-package com.example.potatotilnewsfeed.domain.user.controller;
+package com.example.potatotilnewsfeed.domain.user.aop.controller;
 
 import com.example.potatotilnewsfeed.domain.user.dto.SignupRequestDto;
 import com.example.potatotilnewsfeed.domain.user.dto.UserRequestDto;
@@ -62,7 +62,6 @@ public class UserController {
     @GetMapping("/v1/users")
     public ResponseEntity<ResponseDto<UserResponseDto>> getUser(
         @AuthenticationPrincipal UserDetailsImpl userDetails) {
-
             UserResponseDto userResponseDto = userServiceImpl.getUser(userDetails);
             return ResponseEntity.ok()
                 .body(ResponseDto.<UserResponseDto>builder()

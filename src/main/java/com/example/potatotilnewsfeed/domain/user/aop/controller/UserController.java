@@ -1,5 +1,6 @@
 package com.example.potatotilnewsfeed.domain.user.aop.controller;
 
+import com.example.potatotilnewsfeed.domain.user.aop.annotation.Timer;
 import com.example.potatotilnewsfeed.domain.user.dto.SignupRequestDto;
 import com.example.potatotilnewsfeed.domain.user.dto.UserRequestDto;
 import com.example.potatotilnewsfeed.domain.user.dto.UserResponseDto;
@@ -97,9 +98,17 @@ public class UserController {
                     .build());
     }
 
+    @Timer
     @DeleteMapping("/v1/users")
     public void deleteUser(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody UserRequestDto userRequestDto) {
+
         userServiceImpl.deleteUser(userDetails, userRequestDto);
+        // 삭제 서비스 로직 : 소요시간 2초로 설정
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
 }

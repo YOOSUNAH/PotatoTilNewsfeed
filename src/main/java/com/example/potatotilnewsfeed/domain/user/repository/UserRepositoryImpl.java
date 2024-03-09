@@ -38,8 +38,6 @@ public class UserRepositoryImpl extends QuerydslRepositorySupport implements Use
             .fetch();
     }
 
-
-
     private BooleanExpression equalNickname(String nickname) {
         if (nickname == null || nickname.isEmpty()) {
             return null;

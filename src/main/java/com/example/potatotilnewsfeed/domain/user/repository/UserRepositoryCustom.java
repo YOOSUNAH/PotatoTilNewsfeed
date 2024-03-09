@@ -10,4 +10,5 @@ public interface UserRepositoryCustom {
 
     List<User> search(String nickname, String email);
 
+
 }

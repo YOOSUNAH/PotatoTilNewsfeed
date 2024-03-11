@@ -20,6 +20,7 @@ import java.util.NoSuchElementException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -188,5 +190,11 @@ public class TilController {
     @ExceptionHandler(DuplicateKeyException.class)
     public ResponseEntity<String> handleDuplicateKeyException(DuplicateKeyException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    }
+    @GetMapping("v1/tils/pages")
+    public Page<GetTilListResponseDto> getAllTilPages(@RequestParam(required = false, defaultValue = "0", value = "page") int pageNo,
+        @RequestParam(required = false, defaultValue = "modifiedAt", value = "orderby") String criteria,
+        @RequestParam(required = false, defaultValue = "DESC", value = "sort") String sort){
+        return tilService.getAllTilPages(pageNo, criteria, sort);
     }
 }

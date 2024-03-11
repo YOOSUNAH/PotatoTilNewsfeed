@@ -20,6 +20,12 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -177,4 +183,30 @@ public class TilService {
 
         tilLikeRepository.delete(tilLike);
     }
+
+    public Page<GetTilListResponseDto> getAllTilPages(int pageNo, String criteria, String sort){
+        Pageable pageable =
+            (sort.equals("ASC"))
+                ? PageRequest.of(pageNo, 5, Sort.by(Sort.Direction.ASC, criteria))
+                : PageRequest.of(pageNo, 5, Sort.by(Direction.DESC, criteria));
+
+        Page<Til> tilPage = tilRepository.findAll(pageable);
+
+        List<GetTilListResponseDto> getTilListResponseDtoList = new ArrayList<>();
+
+        for (Til til : tilPage.getContent()) {
+            User user = til.getUser();
+            int likes = getLikes(til);
+            GetTilResponseDto getTilResponseDto = new GetTilResponseDto(til, user, likes);
+
+            List<GetTilResponseDto> getTilResponseDtoList = new ArrayList<>();
+            getTilResponseDtoList.add(getTilResponseDto);
+
+            GetTilListResponseDto getTilListResponseDto = new GetTilListResponseDto(getTilResponseDtoList, user);
+            getTilListResponseDtoList.add(getTilListResponseDto);
+        }
+
+        return new PageImpl<>(getTilListResponseDtoList, pageable, tilPage.getTotalElements());
+    }
+
 }

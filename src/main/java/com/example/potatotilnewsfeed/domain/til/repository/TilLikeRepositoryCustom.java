@@ -12,4 +12,7 @@ public interface TilLikeRepositoryCustom {
     Optional<TilLike> findByTilAndUser(Til til, User user);
 
     List<TilLike> findAllByTil(Til til);
+
+    List<Til> getTilListWithPage(long offset, int pageSize);
+    List<Til> getAllTilPageAndSortCreateAtDesc(long offset, int pageSize);
 }

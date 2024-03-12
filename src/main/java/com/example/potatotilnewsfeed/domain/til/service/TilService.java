@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
@@ -184,7 +185,7 @@ public class TilService {
         tilLikeRepository.delete(tilLike);
     }
 
-    public Page<GetTilListResponseDto> getAllTilPages(int pageNo, String criteria, String sort){
+    public Page<GetTilListResponseDto> getAllTilPages(int pageNo, String criteria, String sort) {
         Pageable pageable =
             (sort.equals("ASC"))
                 ? PageRequest.of(pageNo, 5, Sort.by(Sort.Direction.ASC, criteria))
@@ -202,11 +203,45 @@ public class TilService {
             List<GetTilResponseDto> getTilResponseDtoList = new ArrayList<>();
             getTilResponseDtoList.add(getTilResponseDto);
 
-            GetTilListResponseDto getTilListResponseDto = new GetTilListResponseDto(getTilResponseDtoList, user);
+            GetTilListResponseDto getTilListResponseDto = new GetTilListResponseDto(
+                getTilResponseDtoList, user);
             getTilListResponseDtoList.add(getTilListResponseDto);
         }
 
         return new PageImpl<>(getTilListResponseDtoList, pageable, tilPage.getTotalElements());
     }
 
+    public List<GetTilResponseDto> getAllTilPage(int page, int size) {
+
+        PageRequest pageRequest = PageRequest.of(page, size);
+
+        return tilLikeRepository.getTilListWithPage(pageRequest.getOffset(), pageRequest.getPageSize())
+            .stream()
+            .map(m -> {
+                int likes = getLikes(m);
+                return GetTilResponseDto.builder()
+                    .til(m)
+                    .user(m.getUser())
+                    .likes(likes) // 수정된 부분
+                    .build();
+            })
+            .collect(Collectors.toList());
+    }
+
+
+    public List<GetTilResponseDto> getAllTilPageAndSortCreateAtDesc(int page, int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+
+        return tilLikeRepository.getAllTilPageAndSortCreateAtDesc(pageRequest.getOffset(), pageRequest.getPageSize())
+            .stream()
+            .map(m -> {
+                int likes = getLikes(m);
+                return GetTilResponseDto.builder()
+                    .til(m)
+                    .user(m.getUser())
+                    .likes(likes) // 수정된 부분
+                    .build();
+            })
+            .collect(Collectors.toList());
+    }
 }

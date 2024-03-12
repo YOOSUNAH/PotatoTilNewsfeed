@@ -191,10 +191,28 @@ public class TilController {
     public ResponseEntity<String> handleDuplicateKeyException(DuplicateKeyException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
+
+    // 페이징 처리
     @GetMapping("v1/tils/pages")
-    public Page<GetTilListResponseDto> getAllTilPages(@RequestParam(required = false, defaultValue = "0", value = "page") int pageNo,
+    public Page<GetTilListResponseDto> getAllTilPages(
+        @RequestParam(required = false, defaultValue = "0", value = "page") int pageNo,
         @RequestParam(required = false, defaultValue = "modifiedAt", value = "orderby") String criteria,
-        @RequestParam(required = false, defaultValue = "DESC", value = "sort") String sort){
+        @RequestParam(required = false, defaultValue = "DESC", value = "sort") String sort) {
         return tilService.getAllTilPages(pageNo, criteria, sort);
     }
+
+    // 페이징 처리 - 정렬 기준 없이, 쌓인 데이터 순서대로 페이징 처리
+    @GetMapping("v2/tils/pages")
+    public List<GetTilResponseDto> getTilListWithPage(@RequestParam("page") int page,
+        @RequestParam("size") int size) {
+        return tilService.getAllTilPage(page, size);
+    }
+
+    // 페이징 처리 - 정렬된 데이터에 대한 페이징 처리
+    @GetMapping("v3/tils/pages")
+    public List<GetTilResponseDto> getTilListWithPageAndSortCreateAtDesc(
+        @RequestParam("page") int page, @RequestParam("size") int size) {
+        return tilService.getAllTilPageAndSortCreateAtDesc(page, size);
+    }
+
 }

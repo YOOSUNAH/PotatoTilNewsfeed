@@ -215,7 +215,8 @@ public class TilService {
 
         PageRequest pageRequest = PageRequest.of(page, size);
 
-        return tilLikeRepository.getTilListWithPage(pageRequest.getOffset(), pageRequest.getPageSize())
+        return tilLikeRepository.getTilListWithPage(pageRequest.getOffset(),
+                pageRequest.getPageSize())
             .stream()
             .map(m -> {
                 int likes = getLikes(m);
@@ -232,7 +233,8 @@ public class TilService {
     public List<GetTilResponseDto> getAllTilPageAndSortCreateAtDesc(int page, int size) {
         PageRequest pageRequest = PageRequest.of(page, size);
 
-        return tilLikeRepository.getAllTilPageAndSortCreateAtDesc(pageRequest.getOffset(), pageRequest.getPageSize())
+        return tilLikeRepository.getAllTilPageAndSortCreateAtDesc(pageRequest.getOffset(),
+                pageRequest.getPageSize())
             .stream()
             .map(m -> {
                 int likes = getLikes(m);

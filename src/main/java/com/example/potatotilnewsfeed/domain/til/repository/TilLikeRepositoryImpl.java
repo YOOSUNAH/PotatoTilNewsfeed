@@ -17,7 +17,8 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
-public class TilLikeRepositoryImpl extends QuerydslRepositorySupport implements TilLikeRepositoryCustom {
+public class TilLikeRepositoryImpl extends QuerydslRepositorySupport implements
+    TilLikeRepositoryCustom {
 
     @Autowired
     private JPAQueryFactory jpaQueryFactory;
@@ -89,7 +90,8 @@ public class TilLikeRepositoryImpl extends QuerydslRepositorySupport implements 
 
         QTil tils = QTil.til;
 
-        OrderSpecifier<?> orderSpecifier = new OrderSpecifier<>(Order.DESC, tils.createdAt);  // order를 내림차순 정렬하고, tils.createdAt 을 기준으로
+        OrderSpecifier<?> orderSpecifier = new OrderSpecifier<>(Order.DESC,
+            tils.createdAt);  // order를 내림차순 정렬하고, tils.createdAt 을 기준으로
 
         return jpaQueryFactory.selectFrom(tils)
             .offset(offset)

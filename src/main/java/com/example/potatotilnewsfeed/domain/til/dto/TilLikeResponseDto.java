@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class TilLikeResponseDto {
+
     private Long userId;
     private Long tilId;
 

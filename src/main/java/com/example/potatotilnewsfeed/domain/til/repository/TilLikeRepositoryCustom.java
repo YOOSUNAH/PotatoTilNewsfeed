@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface TilLikeRepositoryCustom {
+
     Optional<List<TilLike>> findAllByUser(User user);
 
     Optional<TilLike> findByTilAndUser(Til til, User user);
@@ -14,5 +15,6 @@ public interface TilLikeRepositoryCustom {
     List<TilLike> findAllByTil(Til til);
 
     List<Til> getTilListWithPage(long offset, int pageSize);
+
     List<Til> getAllTilPageAndSortCreateAtDesc(long offset, int pageSize);
 }
